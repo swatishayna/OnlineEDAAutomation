@@ -1,5 +1,5 @@
 import streamlit as st
-from utils import uploaded_file
+from src.utils import uploaded_file
 import pandas as pd
 import os
 import logging as lg
@@ -34,7 +34,9 @@ def app():
             if link is not None:
                 file_details = {'FileName': link.split('/')[-1], "FileType": 'csv'}
                 df = pd.read_csv(link)
-                st.dataframe(df) 
+                st.dataframe(df)
+                uploaded_file.save_csv(df,file_details)
+
 
             else:
                 st.write("Kindly enter the URL")
