@@ -17,10 +17,10 @@ def save_csv(data_frame,upload_file):
 	try:
 		path = os.getcwd()
 		os.chdir("src//data")
-		df.to_csv("{}".format(uploaded_file.name), index = False)
-		os.chidir("path")
+		data_frame.to_csv("{}".format(upload_file), index = False)
+		os.chdir("path")
 
-		return st.success("Saved file {} in data folder.".format(uploaded_file.name))
+		return st.success("Saved file {} in data folder.".format(upload_file))
 
 	except Exception as e:
 		message = "Something went wrong while saving the CSV in to the data folder"
