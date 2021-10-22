@@ -32,3 +32,4 @@ def app():
     datashape = st.checkbox("Get shape of the dataframe")
     if datashape:
         st.write(basic.get_shape(dataframe))
+        
