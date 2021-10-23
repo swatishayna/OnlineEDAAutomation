@@ -16,7 +16,7 @@ from xml.etree import ElementTree as ET
 def app():
     st.header("Data Ingestion")
 
-    Data_Getter  = ['CSV','EXCEL']
+    Data_Getter  = ['CSV','EXCEL','JSON','XML']
                     #['CSV','CSV from HTML','JSON','EXCEL',"SQL-DB",'Mongo-DB','Cassandra',"TVS","XML"]
 
     choice = st.sidebar.selectbox("Data Type",Data_Getter)
@@ -55,19 +55,19 @@ def app():
 
 
 
-    # elif choice == "JSON":
-    #     st.subheader("Upload the JSON file")
-    #     datafile = st.file_uploader("Upload JSON file", type=['json'])
-    #     try:
-    #         if datafile is not None:
-    #             file_details = {"FileName":datafile.name,"FileType":datafile.type}
-    #             df = pd.read_json(datafile)
-    #             st.dataframe(df)
-    #             uploaded_file.save_uploaded_file(datafile)
-    #     except Exception as e:
-    #         message = "Something went Wrong with your JSON file. Kindly choose right advance options and try once again."
-    #         st.error(message+ "\n {}".format(e))
-    #         lg.error(message)
+    elif choice == "JSON":
+        st.subheader("Upload the JSON file")
+        datafile = st.file_uploader("Upload JSON file", type=['json'])
+        try:
+            if datafile is not None:
+                file_details = {"FileName":datafile.name,"FileType":datafile.type}
+                df = pd.read_json(datafile)
+                st.dataframe(df)
+                uploaded_file.save_uploaded_file(datafile)
+        except Exception as e:
+            message = "Something went Wrong with your JSON file. Kindly choose right advance options and try once again."
+            st.error(message+ "\n {}".format(e))
+            lg.error(message)
 
         
     
@@ -127,5 +127,5 @@ def app():
     #         lg.info(message)
 
 
-           # x = "Git is working."
+        
    
