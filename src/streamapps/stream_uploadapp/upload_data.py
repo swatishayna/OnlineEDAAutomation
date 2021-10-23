@@ -16,7 +16,7 @@ from xml.etree import ElementTree as ET
 def app():
     st.header("Data Ingestion")
 
-    Data_Getter  = ['CSV']
+    Data_Getter  = ['CSV','EXCEL']
                     #['CSV','CSV from HTML','JSON','EXCEL',"SQL-DB",'Mongo-DB','Cassandra',"TVS","XML"]
 
     choice = st.sidebar.selectbox("Data Type",Data_Getter)
@@ -71,19 +71,19 @@ def app():
 
         
     
-    # elif choice == "EXCEL":
-    #     st.subheader("Upload the EXCEL file")
-    #     datafile = st.file_uploader("Upload EXCEL", type=['xls','xlsx'])
-    #     try:
-    #         if datafile is not None:
-    #             file_details = {"FileName":datafile.name,"FileType":datafile.type}
-    #             df = pd.read_excel(datafile)
-    #             st.dataframe(df)
-    #             uploaded_file.save_uploaded_file(datafile)
-    #     except Exception as e:
-    #         message = "Something went Wrong with your EXCEL file. Kindly choose right advance options and try once again."
-    #         st.error(message+ "\n {}".format(e))
-    #         lg.info(message)
+    elif choice == "EXCEL":
+        st.subheader("Upload the EXCEL file")
+        datafile = st.file_uploader("Upload EXCEL", type=['xls','xlsx'])
+        try:
+            if datafile is not None:
+                file_details = {"FileName":datafile.name,"FileType":datafile.type}
+                df = pd.read_excel(datafile)
+                st.dataframe(df)
+                uploaded_file.save_uploaded_file(datafile)
+        except Exception as e:
+            message = "Something went Wrong with your EXCEL file. Kindly choose right advance options and try once again."
+            st.error(message+ "\n {}".format(e))
+            lg.info(message)
 
     
     # elif choice == "SQL-DB":            Ctrl + / 
