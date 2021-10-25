@@ -16,7 +16,7 @@ from xml.etree import ElementTree as ET
 def app():
     st.header("Data Ingestion")
 
-    Data_Getter  = ['CSV','EXCEL','JSON','XML']
+    Data_Getter  = ['CSV','EXCEL','JSON', 'TSV', 'XML']
                     #['CSV','CSV from HTML','JSON','EXCEL',"SQL-DB",'Mongo-DB','Cassandra',"TVS","XML"]
 
     choice = st.sidebar.selectbox("Data Type",Data_Getter)
@@ -108,8 +108,20 @@ def app():
     #         st.error(message+ "\n {}".format(e))
     #         lg.info(message)
 
-    # elif choice == "TVS":
-    #     st.subheader("Upload the TVS file")
+    elif choice == "TSV":
+        st.subheader("Upload the TSV file")
+        datafile = st.file_uploader("Upload the TVS file", type=['tsv','txt','csv'])
+        try:
+            if datafile is not None:
+                file_details = {'FileName': datafile.name, "FileType" : datafile.type}
+                df = pd.read_csv(datafile, sep='\t')
+                st.dataframe(df)
+                uploaded_file.save_uploaded_file(datafile)
+
+        except Exception as e:
+            message = "Something went Wrong with your TVS file. Kindly choose right advance options and try once again."
+            st.error(message+ "\n {}".format(e))
+            lg.info(message)
     
     # elif choice == "XML":
     #     st.subheader("Upload the XML file")
