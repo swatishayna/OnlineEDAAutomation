@@ -62,31 +62,7 @@ class Database:
         return self.mng_db, self.collection_name
 
 
-    def get_path(self,filepath,table,client_secret,db):
-        self.mng_db, self.collection_name=self.connect(table, client_secret, db)
-        self.db_cm = self.mng_db[self.collection_name]
-        cdir = os.path.dirname(__file__)
-        self.file_res = os.path.join(cdir, filepath)
-        return self.file_res,self.db_cm
-
-    def read_data(self,filepath,filetype,table,client_secret,db):
-        self.file_res, self.db_cm = self.get_path(filepath,table,client_secret,db)
-        if filetype == 'csv':
-            data = pd.read_csv(self.file_res)
-        columns_list =[]
-        for col in data.columns:
-            clean_col = re.sub('[\W]+','',col)
-            columns_list.append(clean_col)
-        data.columns = columns_list
-        return data
-
-    #inserting data into mongodatabase , calling readadata->get_path->connect()
-    def insert_data(self,filepath,extension,table,client_secret,db):
-        data_json = json.loads(self.read_data(filepath,extension,table,client_secret,db).to_json(orient='records'))
-        
-        self.db_cm.remove()
-       
-        self.db_cm.insert(data_json)
+    
 
     def retrieve_data(self,table, client_secret, db):
         self.table =table
@@ -135,11 +111,54 @@ class Database:
 
         # create a DataFrame object from Series dictionary
         mongo_df = pd.DataFrame(df_series)
+        #self.load_data(self.table)
         #assinging the column names
         mongo_df.columns = column_list[1:]
         return mongo_df,  mongo_df.dtypes
 
+    def get_path(self,table,filepath,client_secret,db):
+        self.mng_db, self.collection_name=self.connect(table, client_secret, db)
+        self.db_cm = self.mng_db[self.collection_name]
+        cdir = os.path.dirname(__file__)
+        self.file_res = os.path.join(cdir, filepath)
+        return self.file_res,self.db_cm
+
+    def read_data(self,table,filepath,filetype, client_secret,db):
+        if filepath is None:
+            self.file_res, self.db_cm = self.get_path(table,filepath,client_secret,db)
+        if filetype == 'csv':
+            data = pd.read_csv(self.file_res)
+        columns_list =[]
+        for col in data.columns:
+            clean_col = re.sub('[\W]+','',col)
+            columns_list.append(clean_col)
+        data.columns = columns_list
+        return data
+
+    #inserting data into mongodatabase , calling readadata->get_path->connect()
+    def insert_data(self,table,df=None,filepath=None,extension=None,client_secret=None,db=None):
+        if df is None:
+            data_json = json.loads(self.read_data(table,filepath,extension,client_secret,db).to_json(orient='records'))
+        else:
+            
+            result = df.to_json(orient='records')
+            data_json = json.loads(result)
+            
+        self.mng_db, self.collection_name=self.connect(table)
+        self.db_cm = self.mng_db[self.collection_name]
+        self.db_cm.remove()
+       
+        self.db_cm.insert(data_json)
 
     def save_mongodf(self,df,path,filename):
-        path = os.path.join(path,filename)
+        self.filename = filename
+        path = os.path.join(path,self.filename)
         df.to_csv(path)
+
+    def upload_data(self,df,table):
+        # table_raw = table + type
+        # self.mng_db, self.collection_name=self.connect(table)
+        self.insert_data(table,df)
+    
+    
+    

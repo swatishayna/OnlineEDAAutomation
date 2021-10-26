@@ -30,6 +30,9 @@ def app():
                 df = pd.read_csv(datafile)
                 st.dataframe(df)
                 uploaded_file.save_uploaded_file(datafile)
+                filename = datafile.name.split(".")[0]
+                #saving to mongo_db
+                uploaded_file.Database().upload_data(df,filename)
                 
         except Exception as e:
             message = "Something went Wrong with your CSV file. Kindly choose right advance options and try once again."
@@ -58,7 +61,11 @@ def app():
             mongo_result = uploaded_file.Database().retrieve_data(table,client_secret, db)
             df = pd.DataFrame(mongo_result[0]).reset_index(drop=True)
             st.dataframe(df)
+
+            ## saving file to local repo for temporary check
+            filename = table
             uploaded_file.Database().save_mongodf(df,data_path,table+'.csv')
+            uploaded_file.Database().upload_data(df,filename)
             st.write("Data has been successfully uploaded")
 
 
