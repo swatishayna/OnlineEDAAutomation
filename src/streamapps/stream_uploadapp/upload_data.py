@@ -27,7 +27,7 @@ def app():
         try : 
             if datafile is not None:
                 file_details = {"FileName":datafile.name,"FileType":datafile.type}
-                df = pd.read_csv(datafile)
+                df = pd.read_csv(datafile, sep =",")
                 st.dataframe(df)
                 uploaded_file.save_uploaded_file(datafile)
                 
