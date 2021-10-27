@@ -4,6 +4,7 @@ import pandas as pd
 import os
 import logging as lg
 from xml.etree import ElementTree as ET
+import mysql.connector as connection
 
 
 
@@ -16,7 +17,7 @@ from xml.etree import ElementTree as ET
 def app():
     st.header("Data Ingestion")
 
-    Data_Getter  = ['CSV','EXCEL','JSON', 'TSV', 'XML']
+    Data_Getter  = ['CSV','EXCEL','JSON','TSV']
                     #['CSV','CSV from HTML','JSON','EXCEL',"SQL-DB",'Mongo-DB','Cassandra',"TVS","XML"]
 
     choice = st.sidebar.selectbox("Data Type",Data_Getter)
@@ -86,8 +87,50 @@ def app():
             lg.info(message)
 
     
-    # elif choice == "SQL-DB":            Ctrl + / 
-    #     st.subheader("Kindly give the credentials of SQL-DB")
+    # elif choice == "SQL-DB":         #   Ctrl + / 
+    #     st.subheader("Kindly login into your MySQL before giving the credentials.")
+
+    #     col1, col2 = st.columns(2)
+
+    #     with col1:
+    #         try :
+
+    #             with st.form(key = "Credentials form"):
+    #                 Host = st.text_input("Enter Host credentials.")
+    #                 Database = st.text_input("Enter Database credentials.")
+    #                 User = st.text_input("Enter User credentials.Type 'root' for default.")
+    #                 Password = st.text_input("Enter Password credentials")
+    #                 Table = st.text_input("Enter the Table name.")
+    #                 submit_credentials = st.form_submit_button("Execute")
+    #                 mydb = connection.connect(host = Host,database = Database, user = User, password = Password, use_pure = True)
+                   
+
+    #         except Exception as e:
+    #             message = "Something went Wrong with your MySQL connection."
+    #             st.error(message+ "\n{}".format(e))
+
+    #     with col2:
+    #         if submit_credentials :
+            
+    #             mydb = connection.connect(host = Host,database = Database, user = User, password = Password, use_pure = True)
+    #             if mydb.is_connected():
+    #                 st.success("MySQL credentials is successfully applied ")
+    #                 df = pd.read_sql("select * from {}".format(Table),mydb)
+    #                 st.dataframe(df)
+
+                    
+    #             else:
+    #                 st.error("Kindly check your MySQL credentials ")
+
+            
+
+
+
+
+
+
+
+
 
     # elif choice == "Mongo-DB":
     #     st.subheader("Kindly give the credentials of Mongo-DB")
@@ -108,7 +151,9 @@ def app():
     #         st.error(message+ "\n {}".format(e))
     #         lg.info(message)
 
+
     elif choice == "TSV":
+
         st.subheader("Upload the TSV file")
         datafile = st.file_uploader("Upload the TVS file", type=['tsv','txt','csv'])
         try:
@@ -137,7 +182,3 @@ def app():
     #         message = "Something went Wrong with your XML file. Kindly choose right advance options and try once again."
     #         st.error(message+"\n {}".format(e))
     #         lg.info(message)
-
-
-        
-   
