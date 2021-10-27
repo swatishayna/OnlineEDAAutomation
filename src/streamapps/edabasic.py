@@ -1,6 +1,6 @@
 # Custom imports
 from src.streamapps.multipage import MultiPage
-from src.streamapps.stream_basicapp import showdataframe,pandasprofile
+from src.streamapps.stream_basicapp import showdataframe,pandasprofile, basic_info
 
 
 
@@ -12,6 +12,7 @@ def app():
 
     local.add_page("ShowDAtaFrame", showdataframe.app)
     local.add_page("PandasProfiling Report", pandasprofile.app)
+    local.add_page("Test Report", basic_info.app)
 
 
 

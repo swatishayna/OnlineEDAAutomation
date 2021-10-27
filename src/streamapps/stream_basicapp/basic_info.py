@@ -8,6 +8,15 @@ def app():
     basic = Basic()    
     st.header("Basic Exploratory Data Analysis")
     dataframe = basic.get_data("winequality_red.csv")
+    # dataframe = pd.read_csv("https://github.com/datasciencedojo/datasets/blob/master/titanic.csv")
+
+    view_df = st.checkbox("View Dataframe")
+    if view_df:
+        st.dataframe(dataframe)
+
+    datashape = st.checkbox("Get shape of the dataframe")
+    if datashape:
+        st.write(basic.get_shape(dataframe))
 
     column_names = st.checkbox("Get Column names of the dataframe")
     if column_names:
@@ -24,12 +33,4 @@ def app():
     duplicate_rows = st.checkbox("Get Duplicate rows of the datatframe")
     if duplicate_rows:
         st.write(basic.get_duplicate_rows(dataframe))
-
-    view_df = st.checkbox("View Dataframe")
-    if view_df:
-        st.dataframe(dataframe)
-
-    datashape = st.checkbox("Get shape of the dataframe")
-    if datashape:
-        st.write(basic.get_shape(dataframe))
-        
+       

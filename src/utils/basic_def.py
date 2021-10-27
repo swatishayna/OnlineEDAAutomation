@@ -4,7 +4,7 @@ from pathlib import Path
 
 class Basic:
     def get_data(self, filename):
-        data_directory_path = os.path.join((Path(__file__).resolve().parent.parent),'data')
+        data_directory_path = os.path.join((Path(__file__).resolve().parent.parent),'data') # - Written by Suraj
         file_path = os.path.join(data_directory_path,filename)
         return pd.read_csv(file_path)
 
