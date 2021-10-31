@@ -77,3 +77,12 @@ class Visualization:
         except:
             return "Plot cant be generated due to data insufficiency"
         
+    def barplot(self,data,feature_x,feature_y):
+        x_axis = list(data[feature_x])
+        y_axis = list(data[feature_y])
+        
+        try:
+            fig = px.bar(data, x=x_axis, y=y_axis)
+            return fig
+        except:
+            return "Plot cant be generated due to data insufficiency"
