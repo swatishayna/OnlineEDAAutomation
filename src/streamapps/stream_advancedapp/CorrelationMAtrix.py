@@ -70,10 +70,10 @@ def app():
 
     else:
         data_columns = data.columns
-
+        data_type = data.dtypes
         select_label = st.sidebar.selectbox('select your label col',
-                                            ([i for i in data_columns ]))
-        #if data_type[i] == 'float64' or data_type[i] == 'int64'
+                                            ([i for i in data_columns if data_type[i] == 'float64' or data_type[i] == 'int64']))
+        
         if select_label:
             chosen_method = st.sidebar.selectbox('choose correlation type', ('pearson', 'spearman', 'kendall'))
             if chosen_method:

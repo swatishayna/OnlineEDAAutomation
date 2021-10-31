@@ -1,6 +1,6 @@
 # Custom imports
 from src.streamapps.multipage import MultiPage
-from src.streamapps.stream_visualapps import Correlation_Graph,CorrelationHeatmap,Distribution_Graph
+from src.streamapps.stream_visualapps import Correlation_Graph,CorrelationHeatmap,Distribution_Graph,boxplot
 
 
 
@@ -13,6 +13,7 @@ def app():
     local.add_page("Correlation_Graph", Correlation_Graph.app)
     local.add_page("CorrelationHeatmap", CorrelationHeatmap.app)
     local.add_page("Distribution Report", Distribution_Graph.app)
+    local.add_page("Boxplot Report", boxplot.app)
 
 
 
