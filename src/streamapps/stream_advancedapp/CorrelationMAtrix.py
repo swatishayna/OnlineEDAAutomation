@@ -1,15 +1,17 @@
 import streamlit as st
 import numpy as np
-from src.utils import advanced_def
+from src.utils import advanced_def,uploaded_file
 import pandas as pd
-from src.utils import uploaded_file
+from src.streamapps.stream_uploadapp import upload_data
 from pathlib import Path
 
 def app():
-    ## load data
-    mongo_result = uploaded_file.Database().retrieve_data(table,client_secret, db)
-    data = pd.DataFrame(mongo_result[0]).reset_index(drop=True)
-
+    @st.cache
+    def load_data(self):
+        filename = 
+        mongo_result = uploaded_file.Database().retrieve_data(filename)
+        df = pd.DataFrame(mongo_result[0]).reset_index(drop=True)
+        return
 
 
 

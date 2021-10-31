@@ -15,6 +15,7 @@ from pathlib import Path
 
 def app():
     st.header("Data Ingestion")
+    
 
     Data_Getter  = ['CSV','Mongo-DB']
                     #['CSV','CSV from HTML','JSON','EXCEL',"SQL-DB",'Mongo-DB','Cassandra',"TVS","XML"]
@@ -58,12 +59,13 @@ def app():
             # loaddata = uploaded_file.Database().insert_data(final,'csv',table,client_secret , db)
             
             #loaddata = uploaded_file.Database().insert_data('../../../src/data/winequality_red.csv','../../../src/data/winequality_red.csv'.split('.')[-1],table,client_username,client_password , db)
+            filename = table
             mongo_result = uploaded_file.Database().retrieve_data(table,client_secret, db)
             df = pd.DataFrame(mongo_result[0]).reset_index(drop=True)
             st.dataframe(df)
 
             ## saving file to local repo for temporary check
-            filename = table
+            
             uploaded_file.Database().save_mongodf(df,data_path,table+'.csv')
             uploaded_file.Database().upload_data(df,filename)
             st.write("Data has been successfully uploaded")

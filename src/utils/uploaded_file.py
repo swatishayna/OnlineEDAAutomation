@@ -64,9 +64,12 @@ class Database:
 
     
 
-    def retrieve_data(self,table, client_secret, db):
+    def retrieve_data(self,table, client_secret=None, db=None):
         self.table =table
-        self.mng_db, self.collection_name = self.connect(self.table, client_secret, db)
+        if client_secret:
+            self.mng_db, self.collection_name = self.connect(self.table, client_secret, db)
+        else:
+            self.mng_db, self.collection_name = self.connect(self.table)
         #fetching the list of column_names of the data stored
         record = self.mng_db[self.table].find_one()
         column_list = [key for key in record]
@@ -156,8 +159,6 @@ class Database:
         df.to_csv(path)
 
     def upload_data(self,df,table):
-        # table_raw = table + type
-        # self.mng_db, self.collection_name=self.connect(table)
         self.insert_data(table,df)
     
     
