@@ -86,3 +86,12 @@ class Visualization:
             return fig
         except:
             return "Plot cant be generated due to data insufficiency"
+
+    def scatterplot(self,data,feature_x,feature_y):
+        x_axis = list(data[feature_x])
+        y_axis = list(data[feature_y])
+        try:
+            fig = px.scatter(df,x=x_axis,y=y_axis)
+            return fig
+        except:
+            return "Plot cant be generated due to data insufficiency"
