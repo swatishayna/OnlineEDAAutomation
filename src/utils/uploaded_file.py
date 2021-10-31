@@ -48,7 +48,7 @@ def save_cassandra_bundle(user,uploaded_file):
 
 class Database:
     ## Connect with cloud mongodb and create collection inside the database
-    def connect(self, table, client_secret ="mongodb+srv://test:test@cluster0.ulenu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority" ,db = "automate_eda"):
+    def connect(self, table, client_secret ="mongodb+srv://test:test@cluster0.ulenu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority" ,db = "eda"):
         
         self.table = table
         
