@@ -7,7 +7,7 @@ import os
 def app():
     basic = Basic()    
     st.header("Basic Exploratory Data Analysis")
-    dataframe = basic.get_data("winequality_red.csv")
+    dataframe = basic.get_data("train.csv")
     view_df = st.checkbox("View Dataframe")
     if view_df:
         st.dataframe(dataframe)
