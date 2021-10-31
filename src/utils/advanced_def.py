@@ -3,14 +3,9 @@ import numpy as np
 import plotly.express as px
 import os
 
-
 class Advancedanalysis:
     def __init__(self,data):
         self.data = data
-
-
-
-    
      
     def generate_matrix_graph(self,chosen_method, graph_matrix):
         

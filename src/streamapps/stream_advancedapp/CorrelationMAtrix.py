@@ -1,8 +1,8 @@
 import streamlit as st
 import numpy as np
-from src.utils import advanced_def
+from src.utils import advanced_def,uploaded_file
 import pandas as pd
-from src.utils import uploaded_file
+from src.streamapps.stream_uploadapp import upload_data
 from pathlib import Path
 from src.utils.basic_def import Basic
 
