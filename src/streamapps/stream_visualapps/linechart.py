@@ -20,8 +20,13 @@ def app():
     valid_columns = [i for i in data_columns if data_type[i] == 'float64' or data_type[i] == 'int64']
     feature_x =  col1.selectbox('X', valid_columns)
     feature_y = col2.selectbox('Y', valid_columns)
-    result = visual.linechart(data,feature_x,feature_y)
-    st.plotly_chart(result)
+    submit = st.button("Submit")
+    if submit:
+        result = visual.linechart(data,feature_x,feature_y)
+        try:
+            st.plotly_chart(result)
+        except:
+            st.write(result)
     
     
     

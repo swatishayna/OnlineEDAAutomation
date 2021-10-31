@@ -40,8 +40,13 @@ class Visualization:
     def linechart(self,data,feature_x,feature_y):
         x_axis = list(data[feature_x])
         y_axis = list(data[feature_y])
-        fig = px.line(data, x=x_axis, y=y_axis,markers = True)
-        return fig
+        
+        try:
+            fig = px.line(data, x=x_axis, y=y_axis,markers = True)
+            return fig
+        except:
+            return "Plot cant be generated due to data insufficiency"
+        
 
 
     def meshplot(self,data,feature_x, feature_y,feature_z,feature_size):
@@ -49,9 +54,26 @@ class Visualization:
         y_axis = list(data[feature_y])
         z_axis = list(data[feature_z])
         size = list(data[feature_size])
-        fig = px.scatter_3d(data, x=x_axis, y=y_axis, z=z_axis, size=size)
-        return fig
+        try:
+             fig = px.scatter_3d(data, x=x_axis, y=y_axis, z=z_axis, size=size)
+             return fig
+        except:
+            return "Plot cant be generated due to data insufficiency"
+        
 
     def piechart(self,data,feature_values,feature_names):
         fig = px.pie(data, values=feature_values, names =feature_names )
         return fig
+
+    def scatterchart(self,data,feature_x,feature_y,feature_z,feature_size):
+        x_axis = list(data[feature_x])
+        y_axis = list(data[feature_y])
+        z_axis = list(data[feature_z])
+        size   = list(data[feature_size])
+        
+        try:
+            fig = px.scatter_3d(data, x=x_axis, y=y_axis, z=z_axis, size=size)
+            return fig
+        except:
+            return "Plot cant be generated due to data insufficiency"
+        

@@ -27,6 +27,10 @@ def app():
     feature_names = names.selectbox("Select the categorical list", valid_columns_categorical)
 
     
-    
-    result = visual.piechart(data,feature_values,feature_names)
-    st.plotly_chart(result)    
+    submit = st.button("Submit")
+    if submit:
+        result = visual.piechart(data,feature_values,feature_names)    
+        try:
+            st.plotly_chart(result)
+        except:
+            st.write(result)

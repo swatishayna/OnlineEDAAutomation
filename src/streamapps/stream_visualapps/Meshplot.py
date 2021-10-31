@@ -24,6 +24,12 @@ def app():
     feature_y = col2.selectbox('Y',data_columns)
     feature_z = col3.selectbox('Z', data_columns)
     feature_size = st.selectbox('Size', data_columns)
-    result = visual.meshplot(data,feature_x,feature_y,feature_z,feature_size)
-    st.plotly_chart(result)
+    
+    submit = st.button("Submit")
+    if submit:
+        result = visual.meshplot(data,feature_x,feature_y,feature_z,feature_size)
+        try:
+            st.plotly_chart(result)
+        except:
+            st.write(result)
     
