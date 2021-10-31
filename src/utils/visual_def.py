@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import os
+import plotly.graph_objects as go
+
 
 
 class Visualization:
@@ -95,3 +97,27 @@ class Visualization:
             return fig
         except:
             return "Plot cant be generated due to data insufficiency"
+
+
+    def surfaceplot(self,data,feature_x,feature_y,feature_z):
+        x_axis = list(data[feature_x])
+    
+        y_axis = list(data[feature_y])
+        
+        z_axis = list(data[feature_z])
+        
+        numerical_columns = data.select_dtypes([np.number]).columns
+        z_axis=data[numerical_columns].values
+        sh_0, sh_1 = z_axis.shape
+        x_axis, y_axis = np.linspace(0, 1, sh_0), np.linspace(0, 1, sh_1)
+        try:
+            fig = go.Figure(data=[go.Surface(z=z_axis, x=x_axis, y=y_axis)])
+            fig.update_layout(autosize=False,
+        #                   scene_camera_eye=dict(x=1.87, y=0.88, z=-0.64),
+                        width=500, height=500,
+                        margin=dict(l=65, r=50, b=65, t=90)
+            )
+            return fig
+        except:
+            return "Plot cant be generated due to data insufficiency"
+            
