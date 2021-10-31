@@ -9,7 +9,7 @@ from src.utils.basic_def import Basic
 
 def app():
     basic = Basic()    
-    st.header("Advanced Exploratory Data Analysis")
+    st.header("Visualisation Analysis")
     data = basic.get_data("train.csv")
 
     data_columns = data.columns

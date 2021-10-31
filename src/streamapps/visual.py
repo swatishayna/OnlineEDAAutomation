@@ -1,6 +1,6 @@
 # Custom imports
 from src.streamapps.multipage import MultiPage
-from src.streamapps.stream_visualapps import Correlation_Graph,CorrelationHeatmap,Distribution_Graph,boxplot
+from src.streamapps.stream_visualapps import Correlation_Graph,Distribution_Graph,boxplot, linechart, piechart,barplot, Meshplot,scatterchart,surfaceplot,scatterplot
 
 
 
@@ -10,10 +10,17 @@ from src.streamapps.stream_visualapps import Correlation_Graph,CorrelationHeatma
 def app():
     local = MultiPage()
 
-    local.add_page("Correlation_Graph", Correlation_Graph.app)
-    local.add_page("CorrelationHeatmap", CorrelationHeatmap.app)
-    local.add_page("Distribution Report", Distribution_Graph.app)
-    local.add_page("Boxplot Report", boxplot.app)
+    local.add_page("2D - Correlation Report", Correlation_Graph.app)
+    local.add_page("2D - Distribution Report", Distribution_Graph.app)
+    local.add_page("2D - Boxplot Report", boxplot.app)
+    local.add_page("2D - LineChart Report", linechart.app)
+    local.add_page("2D - PieChart Report", piechart.app)
+    local.add_page("2D - ScatterPlot Report", scatterplot.app)
+    local.add_page("2D - BarPlot Report", barplot.app)
+    #######################################################
+    local.add_page("3D - ScatterChart Report", scatterchart.app)
+    local.add_page("3D - MeshPlot Report", Meshplot.app)
+    local.add_page("3D - SurfacePlot Report", surfaceplot.app)
 
 
 
