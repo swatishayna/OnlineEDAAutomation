@@ -11,4 +11,5 @@ python-dotenv>=0.5.1
 pymongo
 streamlit-pandas-profiling
 openpyxl
+mysql-connector-python
 
