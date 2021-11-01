@@ -4,6 +4,7 @@ import pandas as pd
 import os
 import logging as lg
 from xml.etree import ElementTree as ET
+from pathlib import Path
 import mysql.connector as connection
 
 
@@ -11,9 +12,14 @@ import mysql.connector as connection
 
 def app():
     st.header("Data Ingestion")
+    
+
+
+                    #['CSV','CSV from HTML','JSON','EXCEL',"SQL-DB",'Mongo-DB','Cassandra',"TVS","XML"]
 
     Data_Getter  = ['CSV','CSV from HTML','EXCEL','JSON','TSV',"SQL-DB"]
                     #['Cassandra',"XML"]
+
 
     choice = st.sidebar.selectbox("Data Type",Data_Getter)
 
@@ -26,11 +32,45 @@ def app():
                 df = pd.read_csv(datafile, sep =",")
                 st.dataframe(df)
                 uploaded_file.save_uploaded_file(datafile)
+                filename = datafile.name.split(".")[0]
+                #saving to mongo_db
+                uploaded_file.Database().upload_data(df,filename)
                 
         except Exception as e:
             message = "Something went Wrong with your CSV file. Kindly choose right advance options and try once again."
             st.error(message+ "\n {}".format(e))
             lg.error(message)
+    
+    if choice == 'Mongo-DB':
+        
+
+        form = st.form(key='my-form')
+        db = form.text_input("Enter the name of your database here")
+        client_secret = form.text_input("Enter client secret here")
+        table = form.text_input("Enter the name of collection here")
+        
+        submit = form.form_submit_button('Submit')
+
+        st.write('Press submit to load your dataset')
+
+        if submit:
+           
+            data_path = os.path.join((Path(__file__).resolve().parent.parent.parent),'data')
+            # final = os.path.join(path1,'winequality_red.csv' )
+            # loaddata = uploaded_file.Database().insert_data(final,'csv',table,client_secret , db)
+            
+            #loaddata = uploaded_file.Database().insert_data('../../../src/data/winequality_red.csv','../../../src/data/winequality_red.csv'.split('.')[-1],table,client_username,client_password , db)
+            filename = table
+            mongo_result = uploaded_file.Database().retrieve_data(table,client_secret, db)
+            df = pd.DataFrame(mongo_result[0]).reset_index(drop=True)
+            st.dataframe(df)
+
+            ## saving file to local repo for temporary check
+            
+            uploaded_file.Database().save_mongodf(df,data_path,table+'.csv')
+            uploaded_file.Database().upload_data(df,filename)
+            st.write("Data has been successfully uploaded")
+
 
     elif choice == 'CSV from HTML':
 
@@ -133,8 +173,7 @@ def app():
                 st.info(message)
 
 
-    # elif choice == "Mongo-DB":
-    #     st.subheader("Kindly give the credentials of Mongo-DB")
+    
     
     # elif choice == "Cassandra":
     #     st.subheader("Kindly give the credentials of Cassandra")

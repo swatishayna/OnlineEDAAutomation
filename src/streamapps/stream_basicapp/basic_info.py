@@ -7,7 +7,10 @@ import os
 def app():
     basic = Basic()    
     st.header("Basic Exploratory Data Analysis")
-    dataframe = basic.get_data("winequality_red.csv")
+
+    dataframe = basic.get_data("train.csv")
+
+   
     # dataframe = pd.read_csv("https://github.com/datasciencedojo/datasets/blob/master/titanic.csv")
 
     view_df = st.checkbox("View Dataframe")

@@ -8,7 +8,7 @@ from src.streamapps.stream_uploadapp import upload_data
 app = MultiPage()
 
 # Title of the main page
-st.title("Online EDA Application")
+
 
 # Add all your applications (pages) here
 app.add_page("Upload Data", upload_data.app)
