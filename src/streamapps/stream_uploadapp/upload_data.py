@@ -5,20 +5,21 @@ import os
 import logging as lg
 from xml.etree import ElementTree as ET
 from pathlib import Path
+import mysql.connector as connection
 
 
-
-#def basic_eda(file_details):
- #   if file_details['FileType'] == 'csv':
-  #      df= read_csv(file_details['FileName'])
 
 
 def app():
     st.header("Data Ingestion")
     
 
-    Data_Getter  = ['CSV','Mongo-DB']
+
                     #['CSV','CSV from HTML','JSON','EXCEL',"SQL-DB",'Mongo-DB','Cassandra',"TVS","XML"]
+
+    Data_Getter  = ['CSV','CSV from HTML','EXCEL','JSON','TSV',"SQL-DB"]
+                    #['Cassandra',"XML"]
+
 
     choice = st.sidebar.selectbox("Data Type",Data_Getter)
 
@@ -28,7 +29,7 @@ def app():
         try : 
             if datafile is not None:
                 file_details = {"FileName":datafile.name,"FileType":datafile.type}
-                df = pd.read_csv(datafile)
+                df = pd.read_csv(datafile, sep =",")
                 st.dataframe(df)
                 uploaded_file.save_uploaded_file(datafile)
                 filename = datafile.name.split(".")[0]
@@ -71,58 +72,106 @@ def app():
             st.write("Data has been successfully uploaded")
 
 
-    # elif choice == 'CSV from HTML':
-    #     link = st.text_input('Enter the html link of CSV file') # Need to check once again for an eror. 
-    #     try:
-    #         link = st.text_input('Enter the html link of CSV file')
-    #         if link is not None:            
-    #             file_details = {'FileName': link.split('/')[-1], "FileType": 'csv'}
-    #             df = pd.read_csv(link)
-    #             st.dataframe(df)
-    #             uploaded_file.save_csv(df,link.split('/')[-1])
+    elif choice == 'CSV from HTML':
 
-            
-    #     except Exception as e:
-    #             message = "Something went wrong wiht 'CSV from HTML' file. Kindly choose right advance options and try one again. "
-    #             st.error( message +"\n{}".format(e))
-    #             lg.error(message)
+        with st.form("CSV from HTML"):
+            try:
+                link = st.text_input('Enter the html link of CSV file') # Need to check once again for an eror. 
+                link_submitted = st.form_submit_button("Execute")
+
+                if link_submitted :
+                    if link is not None:
+                        df = pd.read_csv(link)
+                        st.dataframe(df)
+                        df.to_csv("src\\data\\"+link.split('/')[-1]+".csv", index = False)
+                        st.success("Saved file '{}'' in data folder".format(link.split('/')[-1]))
+                    else:
+                        message = "Something went wront while saving the CSV file."
+                        st.error(message)
+
+                else:
+                    st.info("Enter the CSV link and kindly have an active internet connection.")
+
+            except Exception as e:
+                message = "Something went wrong wiht 'CSV from HTML' file. Kindly choose right advance options and try one again. "
+                st.error( message +"\n{}".format(e))
+                lg.error(message)
 
 
 
 
-    # elif choice == "JSON":
-    #     st.subheader("Upload the JSON file")
-    #     datafile = st.file_uploader("Upload JSON file", type=['json'])
-    #     try:
-    #         if datafile is not None:
-    #             file_details = {"FileName":datafile.name,"FileType":datafile.type}
-    #             df = pd.read_json(datafile)
-    #             st.dataframe(df)
-    #             uploaded_file.save_uploaded_file(datafile)
-    #     except Exception as e:
-    #         message = "Something went Wrong with your JSON file. Kindly choose right advance options and try once again."
-    #         st.error(message+ "\n {}".format(e))
-    #         lg.error(message)
+    elif choice == "JSON":
+        st.subheader("Upload the JSON file")
+        datafile = st.file_uploader("Upload JSON file", type=['json'])
+        try:
+            if datafile is not None:
+                file_details = {"FileName":datafile.name,"FileType":datafile.type}
+                df = pd.read_json(datafile)
+                st.dataframe(df)
+                uploaded_file.save_uploaded_file(datafile)
+        except Exception as e:
+            message = "Something went Wrong with your JSON file. Kindly choose right advance options and try once again."
+            st.error(message+ "\n {}".format(e))
+            lg.error(message)
 
         
     
-    # elif choice == "EXCEL":
-    #     st.subheader("Upload the EXCEL file")
-    #     datafile = st.file_uploader("Upload EXCEL", type=['xls','xlsx'])
-    #     try:
-    #         if datafile is not None:
-    #             file_details = {"FileName":datafile.name,"FileType":datafile.type}
-    #             df = pd.read_excel(datafile)
-    #             st.dataframe(df)
-    #             uploaded_file.save_uploaded_file(datafile)
-    #     except Exception as e:
-    #         message = "Something went Wrong with your EXCEL file. Kindly choose right advance options and try once again."
-    #         st.error(message+ "\n {}".format(e))
-    #         lg.info(message)
+    elif choice == "EXCEL":
+        st.subheader("Upload the EXCEL file")
+        datafile = st.file_uploader("Upload EXCEL", type=['xls','xlsx'])
+        try:
+            if datafile is not None:
+                file_details = {"FileName":datafile.name,"FileType":datafile.type}
+                df = pd.read_excel(datafile)
+                st.dataframe(df)
+                uploaded_file.save_uploaded_file(datafile)
+        except Exception as e:
+            message = "Something went Wrong with your EXCEL file. Kindly choose right advance options and try once again."
+            st.error(message+ "\n {}".format(e))
+            lg.info(message)
 
     
-    # elif choice == "SQL-DB":            Ctrl + / 
-    #     st.subheader("Kindly give the credentials of SQL-DB")
+    elif choice == "SQL-DB":         #   Ctrl + /  
+        st.subheader("Enter your MySQL credentials.")
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            with st.form(key = "Credentials form"):
+                Host = st.text_input("Enter Host credentials.")
+                Database = st.text_input("Enter Database credentials.")
+                User = st.text_input("Enter User credentials.Type 'root' for default.")
+                Password = st.text_input("Enter Password credentials")
+                Table = st.text_input("Enter the Table name.")
+                submit_credentials = st.form_submit_button("Execute")
+                
+                   
+        with col2:
+            if submit_credentials :
+                
+                try:
+                    mydb = connection.connect(host = Host,database = Database, user = User, password = Password, use_pure = True)
+
+                    if mydb.is_connected():
+                         st.success("MySQL credentials is successfully applied. ")
+                         try :
+                            df = pd.read_sql("select * from {}".format(Table),mydb)
+                            st.dataframe(df)
+                            df.to_csv("src\\data\\"+Table+".csv", index = False)
+                            st.success("Saved file '{}'' in data folder.".format(Table))
+                         except Exception as e:
+                            message = "Kindly enter the correct table name."
+                            st.error(message+"\n{}".format(e))
+                except Exception as e:
+                    message ="Kindly enter the right credentials."
+                    st.error(message+"\n {}".format(e))
+
+                          
+
+            else:
+                message = "Kindly login into your MySQL before giving the credentials."
+                st.info(message)
+
 
     
     
@@ -142,8 +191,22 @@ def app():
     #         st.error(message+ "\n {}".format(e))
     #         lg.info(message)
 
-    # elif choice == "TVS":
-    #     st.subheader("Upload the TVS file")
+
+    elif choice == "TSV":
+
+        st.subheader("Upload the TSV file")
+        datafile = st.file_uploader("Upload the TVS file", type=['tsv','txt','csv'])
+        try:
+            if datafile is not None:
+                file_details = {'FileName': datafile.name, "FileType" : datafile.type}
+                df = pd.read_csv(datafile, sep='\t')
+                st.dataframe(df)
+                uploaded_file.save_uploaded_file(datafile)
+
+        except Exception as e:
+            message = "Something went Wrong with your TVS file. Kindly choose right advance options and try once again."
+            st.error(message+ "\n {}".format(e))
+            lg.info(message)
     
     # elif choice == "XML":
     #     st.subheader("Upload the XML file")
@@ -159,7 +222,3 @@ def app():
     #         message = "Something went Wrong with your XML file. Kindly choose right advance options and try once again."
     #         st.error(message+"\n {}".format(e))
     #         lg.info(message)
-
-
-           # x = "Git is working."
-   
