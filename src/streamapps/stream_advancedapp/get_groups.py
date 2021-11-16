@@ -5,7 +5,7 @@ from src.utils.advanced_def import Advanced
 def app():
     advanced = Advanced()
     st.header("Groupby")
-    dataframe = advanced.get_data("winequality_red.csv")
+    dataframe = advanced.get_data("train.csv")
 
     data_columns = dataframe.columns
     data_type = dataframe.dtypes
