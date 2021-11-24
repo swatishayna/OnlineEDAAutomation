@@ -10,7 +10,7 @@ app = MultiPage()
 
 
     # Add all your applications (pages) here
-app.add_page("Upload Data", upload.app)
+app.add_page("Project Dashboard", upload.app)
 app.add_page("BasicEDA",    edabasic.app)
 app.add_page("AdvancedEDA", edaadvanced.app)
 app.add_page("VisualEDA",   visual.app)

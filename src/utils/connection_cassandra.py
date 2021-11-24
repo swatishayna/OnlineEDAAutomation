@@ -2,6 +2,10 @@ from cassandra.cluster import Cluster
 from cassandra.auth import PlainTextAuthProvider
 import os
 from pathlib import Path
+from cassandra.query import SimpleStatement
+from cassandra import ConsistencyLevel
+import pandas as pd
+
 
 class cassandra_user:
     def connect(self):
@@ -19,8 +23,12 @@ class cassandra_user:
     def get_useraccount(self,query):
         session = self.connect()
         session.execute("USE user_account")
-        user_detail = session.execute(query)
-        return user_detail.all()
+        simple_statement = SimpleStatement(query, consistency_level=ConsistencyLevel.ONE)
+        execute_result = session.execute(simple_statement, timeout=None)
+        result = execute_result._current_rows
+        # user_detail = session.execute(query)
+        # return user_detail.all()
+        return pd.DataFrame(result)
 
     def adduser(self,query):
         try:
@@ -29,7 +37,7 @@ class cassandra_user:
             info = session.execute(query)
             return info.all()
         except:
-            print("^^^^^^^^^^^^^^^^^^^^^")
+            pass
 
     def add_project(self,query):
         session = self.connect()

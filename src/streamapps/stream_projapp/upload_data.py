@@ -196,8 +196,8 @@ def app():
         cassandra = cassandra_user()
         user = cassandra.get_useraccount(f"SELECT * FROM user WHERE email = '{email}' ALLOW FILTERING ")
         status = uploaded_file.Database().check_existing_collection(file_name)
-        print("**************************************", status)
-        if len(user) > 0 and status:
+        
+        if user.shape[0] >  0 and status:
             project_name = email+'_'+Project_Name
             try:
 
