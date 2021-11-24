@@ -4,15 +4,12 @@ from src.utils import advanced_def,uploaded_file
 import pandas as pd
 from src.streamapps.stream_projapp import upload_data
 from pathlib import Path
-from src.utils.basic_def import Basic
+from src.utils import uploaded_file
 
 def app():
-    ## load data
-    # mongo_result = uploaded_file.Database().retrieve_data(table,client_secret, db)
-    # data = pd.DataFrame(mongo_result[0]).reset_index(drop=True)
-    basic = Basic()    
+   
     st.header("Advanced Exploratory Data Analysis")
-    data = basic.get_data("train.csv") 
+    data = uploaded_file.read_datafolder() 
 
 
 

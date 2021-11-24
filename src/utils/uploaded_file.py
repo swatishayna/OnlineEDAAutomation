@@ -1,4 +1,3 @@
-import os 
 import streamlit as st
 import pandas as pd
 import ssl
@@ -8,6 +7,18 @@ import pandas as pd
 import json
 import re
 import numpy as np
+from pathlib import Path
+
+
+
+
+def read_datafolder():
+        data_directory_path = os.path.join((Path(__file__).resolve().parent.parent),'data') 
+        files = os.listdir(data_directory_path)
+        files.remove('.gitkeep')
+        print(files)
+        file_path = os.path.join(data_directory_path,files[0])
+        return pd.read_csv(file_path)
 
 
 def save_uploaded_file(uploaded_file):
@@ -175,5 +186,6 @@ class Database:
         status = hasattr(self.mng_db, table)
         return status
 
+    
     
     

@@ -4,12 +4,12 @@ from src.utils import advanced_def,visual_def
 import pandas as pd
 from src.streamapps.stream_projapp import upload_data
 from pathlib import Path
-from src.utils.basic_def import Basic
+from src.utils import uploaded_file
 
 def app():
-    basic = Basic()    
+        
     st.header("Visualisation Analysis")
-    data = basic.get_data("train.csv")
+    data = uploaded_file.read_datafolder()
 
     data_columns = data.columns
     data_type = data.dtypes

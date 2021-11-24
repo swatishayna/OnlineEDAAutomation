@@ -1,14 +1,16 @@
 import streamlit as st
 import pandas as pd
-from src.utils.basic_def import Basic
 from pathlib import Path
 import os
+from src.utils import uploaded_file
+from src.utils.basic_def import Basic
 
 def app():
-    basic = Basic()    
+    basic = Basic()
     st.header("Basic Exploratory Data Analysis")
+    dataframe = uploaded_file.read_datafolder()
+    
 
-    dataframe = basic.get_data("train.csv")
 
    
     
