@@ -11,14 +11,8 @@ def app():
     st.header("Advanced Exploratory Data Analysis")
     data = uploaded_file.read_datafolder() 
 
-
-
-
     analysis = advanced_def.Advancedanalysis(data)
-    # operation_list = ["correlation"]
-    # choice = st.sidebar.selectbox("Data Type",operation_list)
     
-    # if choice == "correlation":
     def description():
         expander = st.expander("Pearson")
         expander.write(""" The Pearson's correlation coefficient (r) is a measure of 

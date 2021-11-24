@@ -6,11 +6,7 @@ from pathlib import Path
 
 
 class Advanced:
-    def get_data(self, filename):
-        data_directory_path = os.path.join(Path(__file__).resolve().parent.parent, 'data')  # - Written by Suraj
-        file_path = os.path.join(data_directory_path, filename)
-        return pd.read_csv(file_path)
-
+    
     def get_missing_value(self, df):
         return df.isnull()
 
@@ -23,17 +19,9 @@ class Advanced:
         cv = sr.value_counts()
         return cv
 
-    def get_crosstab(self, df1, df2):
-        ct = pd.crosstab(df1, df2)
-        return ct
+    
 
-    def get_groups(self, df, col):
-        gb = df.groupby(col)
-        return gb
-
-    def get_filtered_info(self, df):
-        f = df.filter(items=['fixed acidity', 'citric acid'])
-        return f
+    
 
 
 class Advancedanalysis:

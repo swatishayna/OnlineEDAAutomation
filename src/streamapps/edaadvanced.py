@@ -1,6 +1,6 @@
 # Custom imports
 from src.streamapps.multipage import MultiPage
-from src.streamapps.stream_advancedapp import columwisereport,CorrelationMAtrix,get_count_value,get_quantile_stats,get_missing_value,get_crosstab,get_groups
+from src.streamapps.stream_advancedapp import CorrelationMatrix, columwisereport,get_count_value,get_quantile_stats,get_missing_value,get_crosstab,get_groups
 
 # import your pages here
 
@@ -15,5 +15,5 @@ def app():
     local.add_page("Crosstab", get_crosstab.app)
     local.add_page("Groups", get_groups.app)
     local.add_page("Show Column Report", columwisereport.app)
-    local.add_page("Correlation", CorrelationMAtrix.app)
+    local.add_page("Correlation", CorrelationMatrix.app)
     local.run()

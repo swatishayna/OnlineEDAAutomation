@@ -1,11 +1,12 @@
 import streamlit as st
 from src.utils.advanced_def import Advanced
+from src.utils import uploaded_file
 
 
 def app():
     advanced = Advanced()
     st.header("Visualisation Analysis")
-    dataframe = advanced.get_data("train.csv")
+    dataframe = uploaded_file.read_datafolder()
 
     data_columns = dataframe.columns
     data_type = dataframe.dtypes
