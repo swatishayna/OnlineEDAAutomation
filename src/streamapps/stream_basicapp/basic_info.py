@@ -11,7 +11,7 @@ def app():
     dataframe = basic.get_data("train.csv")
 
    
-    # dataframe = pd.read_csv("https://github.com/datasciencedojo/datasets/blob/master/titanic.csv")
+    
 
     view_df = st.checkbox("View Dataframe")
     if view_df:

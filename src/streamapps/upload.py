@@ -1,18 +1,6 @@
-# We can delete delete this
-# do not work in this because omkar said we dont need multipageapp for upload_data.... check app.py and stream_uploadapp
-
-
-
-
-
-
-
-
-
-
 # Custom imports
 from src.streamapps.multipage import MultiPage
-from src.streamapps.stream_uploadapp import upload_data
+from src.streamapps.stream_projapp import upload_data, viewproject
 
 
 
@@ -22,7 +10,8 @@ from src.streamapps.stream_uploadapp import upload_data
 def app():
     local = MultiPage()
 
-    local.add_page("UploadData", upload_data.app)
+    local.add_page("Add Project",  upload_data.app)
+    local.add_page("View Project", viewproject.app)
 
 
 

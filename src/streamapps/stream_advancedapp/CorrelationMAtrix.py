@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 from src.utils import advanced_def,uploaded_file
 import pandas as pd
-from src.streamapps.stream_uploadapp import upload_data
+from src.streamapps.stream_projapp import upload_data
 from pathlib import Path
 from src.utils.basic_def import Basic
 

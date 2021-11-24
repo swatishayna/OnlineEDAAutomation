@@ -5,25 +5,29 @@ import os
 import logging as lg
 from xml.etree import ElementTree as ET
 from pathlib import Path
-import mysql.connector as connection
+from src.utils.connection_cassandra import cassandra_user
+
 
 
 
 
 def app():
-    st.header("Data Ingestion")
+    st.header("Add Project")
+    
+    
     
 
+    email = st.text_input("Enter your registered emailid here")
+    Data_Getter  = ['CSV','CSV from HTML','EXCEL','JSON','TSV',"SQL-DB",'Mongo-DB']
+    Project_Name = st.text_input("Enter the name of your Project here")
+    description = st.text_input("Enter the description of Project here")
+    select_source = st.selectbox('Select Data Source',Data_Getter , key=2)
+    
+    
+    
 
-                    #['CSV','CSV from HTML','JSON','EXCEL',"SQL-DB",'Mongo-DB','Cassandra',"TVS","XML"]
-
-    Data_Getter  = ['CSV','CSV from HTML','EXCEL','JSON','TSV',"SQL-DB"]
-                    #['Cassandra',"XML"]
-
-
-    choice = st.sidebar.selectbox("Data Type",Data_Getter)
-
-    if choice == "CSV":
+    
+    if select_source == "CSV":
         st.subheader("Upload the CSV file")
         datafile = st.file_uploader("Upload CSV", type=['csv'])
         try : 
@@ -32,47 +36,43 @@ def app():
                 df = pd.read_csv(datafile, sep =",")
                 st.dataframe(df)
                 uploaded_file.save_uploaded_file(datafile)
-                filename = datafile.name.split(".")[0]
+                file_name = datafile.name.split(".")[0]
                 #saving to mongo_db
-                uploaded_file.Database().upload_data(df,filename)
+                uploaded_file.Database().upload_data(df,file_name)
                 
         except Exception as e:
             message = "Something went Wrong with your CSV file. Kindly choose right advance options and try once again."
             st.error(message+ "\n {}".format(e))
             lg.error(message)
     
-    if choice == 'Mongo-DB':
+    if select_source == 'Mongo-DB':
         
 
         form = st.form(key='my-form')
         db = form.text_input("Enter the name of your database here")
         client_secret = form.text_input("Enter client secret here")
-        table = form.text_input("Enter the name of collection here")
+        file_name = form.text_input("Enter the name of collection here")
         
-        submit = form.form_submit_button('Submit')
+        submit = form.form_submit_button('UploadData')
 
-        st.write('Press submit to load your dataset')
+        st.write('Press UploadData to continue')
 
         if submit:
-           
+        
             data_path = os.path.join((Path(__file__).resolve().parent.parent.parent),'data')
-            # final = os.path.join(path1,'winequality_red.csv' )
-            # loaddata = uploaded_file.Database().insert_data(final,'csv',table,client_secret , db)
-            
-            #loaddata = uploaded_file.Database().insert_data('../../../src/data/winequality_red.csv','../../../src/data/winequality_red.csv'.split('.')[-1],table,client_username,client_password , db)
-            filename = table
-            mongo_result = uploaded_file.Database().retrieve_data(table,client_secret, db)
+            #filename = table
+            mongo_result = uploaded_file.Database().retrieve_data(file_name,client_secret, db)
             df = pd.DataFrame(mongo_result[0]).reset_index(drop=True)
             st.dataframe(df)
 
             ## saving file to local repo for temporary check
             
-            uploaded_file.Database().save_mongodf(df,data_path,table+'.csv')
-            uploaded_file.Database().upload_data(df,filename)
+            uploaded_file.Database().save_mongodf(df,data_path,file_name+'.csv')
+            uploaded_file.Database().upload_data(df,file_name)
             st.write("Data has been successfully uploaded")
 
 
-    elif choice == 'CSV from HTML':
+    elif select_source == 'CSV from HTML':
 
         with st.form("CSV from HTML"):
             try:
@@ -100,7 +100,7 @@ def app():
 
 
 
-    elif choice == "JSON":
+    elif select_source == "JSON":
         st.subheader("Upload the JSON file")
         datafile = st.file_uploader("Upload JSON file", type=['json'])
         try:
@@ -116,7 +116,7 @@ def app():
 
         
     
-    elif choice == "EXCEL":
+    elif select_source == "EXCEL":
         st.subheader("Upload the EXCEL file")
         datafile = st.file_uploader("Upload EXCEL", type=['xls','xlsx'])
         try:
@@ -131,7 +131,7 @@ def app():
             lg.info(message)
 
     
-    elif choice == "SQL-DB":         #   Ctrl + /  
+    elif select_source == "SQL-DB":         
         st.subheader("Enter your MySQL credentials.")
 
         col1, col2 = st.columns(2)
@@ -145,7 +145,7 @@ def app():
                 Table = st.text_input("Enter the Table name.")
                 submit_credentials = st.form_submit_button("Execute")
                 
-                   
+                
         with col2:
             if submit_credentials :
                 
@@ -153,46 +153,28 @@ def app():
                     mydb = connection.connect(host = Host,database = Database, user = User, password = Password, use_pure = True)
 
                     if mydb.is_connected():
-                         st.success("MySQL credentials is successfully applied. ")
-                         try :
+                        st.success("MySQL credentials is successfully applied. ")
+                        try :
                             df = pd.read_sql("select * from {}".format(Table),mydb)
                             st.dataframe(df)
                             df.to_csv("src\\data\\"+Table+".csv", index = False)
                             st.success("Saved file '{}'' in data folder.".format(Table))
-                         except Exception as e:
+                        except Exception as e:
                             message = "Kindly enter the correct table name."
                             st.error(message+"\n{}".format(e))
                 except Exception as e:
                     message ="Kindly enter the right credentials."
                     st.error(message+"\n {}".format(e))
 
-                          
+                        
 
             else:
                 message = "Kindly login into your MySQL before giving the credentials."
                 st.info(message)
 
 
-    
-    
-    # elif choice == "Cassandra":
-    #     st.subheader("Kindly give the credentials of Cassandra")
-    #     user = st.text_input("Enter your username")
-    #     datafile = st.file_uploader("Upload the Cassandra Bundle",type =['zip'])
-    #     try:
-    #     	if datafile is not None:
-    #     		file_details={"FileName":datafile.name,"FileType":datafile.type}
-    #     		save_cassandra_bundle(user,datafile)
-    #     		keyspace = st.text_input("Enter the Keyspace Name")
-    #     		client_id =st.text_input("Enter Client ID")
-    #     		client_secret = st.text_input("Enter Client Secret")
-    #     except Exception as e:
-    #         message = "Something went Wrong with your Cassandra file. Kindly choose right advance options and try once again."
-    #         st.error(message+ "\n {}".format(e))
-    #         lg.info(message)
 
-
-    elif choice == "TSV":
+    elif select_source == "TSV":
 
         st.subheader("Upload the TSV file")
         datafile = st.file_uploader("Upload the TVS file", type=['tsv','txt','csv'])
@@ -208,17 +190,24 @@ def app():
             st.error(message+ "\n {}".format(e))
             lg.info(message)
     
-    # elif choice == "XML":
-    #     st.subheader("Upload the XML file")
-    #     datafile = st.file_uploader("Upload XML", type=['xml'])
-    #     try:
-    #         if datafile is not None:
-    #             file_details = {"FileName": datafile.name,"FileType":datafile.type}
-    #             temp = ET.parse(datafile)
-    #             df = pd.DataFrame(temp)
-    #             st.dataframe(df)
-    #             uploaded_file.save_uploaded_file(df)
-    #     except Exception as e:
-    #         message = "Something went Wrong with your XML file. Kindly choose right advance options and try once again."
-    #         st.error(message+"\n {}".format(e))
-    #         lg.info(message)
+    submit_form = st.button('Add Project')
+    if submit_form:
+        #email, Project_Name,description ,select_source 
+        cassandra = cassandra_user()
+        user = cassandra.get_useraccount(f"SELECT * FROM user WHERE email = '{email}' ALLOW FILTERING ")
+        status = uploaded_file.Database().check_existing_collection(file_name)
+        print("**************************************", status)
+        if len(user) > 0 and status:
+            project_name = email+'_'+Project_Name
+            try:
+
+                cassandra.add_project(f"INSERT INTO project (email, project_name, project_description, source, filename) VALUES ('{email}', '{project_name}', '{description}', '{select_source}','{file_name}')")
+                st.write("Project Added")
+            except Exception as e:
+                st.write("Issue ")
+                print(e)
+        else:
+            st.write("Entered emailid is not registered")
+
+
+            #mongodb+srv://test:test@cluster0.ulenu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority

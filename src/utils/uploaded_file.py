@@ -48,7 +48,7 @@ def save_cassandra_bundle(user,uploaded_file):
 
 class Database:
     ## Connect with cloud mongodb and create collection inside the database
-    def connect(self, table, client_secret ="mongodb+srv://test:test@cluster0.ulenu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority" ,db = "eda"):
+    def connect(self, table, client_secret ="mongodb+srv://eda:eda@cluster0.vqh6p.mongodb.net/myFirstDatabase?retryWrites=true&w=majority" ,db = "eda"):
         
         self.table = table
         
@@ -140,18 +140,23 @@ class Database:
 
     #inserting data into mongodatabase , calling readadata->get_path->connect()
     def insert_data(self,table,df=None,filepath=None,extension=None,client_secret=None,db=None):
-        if df is None:
-            data_json = json.loads(self.read_data(table,filepath,extension,client_secret,db).to_json(orient='records'))
-        else:
-            
-            result = df.to_json(orient='records')
-            data_json = json.loads(result)
-            
-        self.mng_db, self.collection_name=self.connect(table)
-        self.db_cm = self.mng_db[self.collection_name]
-        self.db_cm.remove()
-       
-        self.db_cm.insert(data_json)
+        try:
+            if df is None:
+                data_json = json.loads(self.read_data(table,filepath,extension,client_secret,db).to_json(orient='records'))
+            else:
+                
+                result = df.to_json(orient='records')
+                data_json = json.loads(result)
+                
+            self.mng_db, self.collection_name=self.connect(table)
+            self.db_cm = self.mng_db[self.collection_name]
+            self.db_cm.remove()
+        
+            self.db_cm.insert(data_json)
+        except:
+            pass
+           
+
 
     def save_mongodf(self,df,path,filename):
         self.filename = filename
@@ -159,7 +164,16 @@ class Database:
         df.to_csv(path)
 
     def upload_data(self,df,table):
-        self.insert_data(table,df)
+        try:
+            self.insert_data(table,df)
+            return 1
+        except:
+            return 0
     
+    def check_existing_collection(self,table):
+        self.mng_db, self.collection_name=self.connect(table)
+        status = hasattr(self.mng_db, table)
+        return status
+
     
     
