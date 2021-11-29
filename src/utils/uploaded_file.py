@@ -8,22 +8,37 @@ import json
 import re
 import numpy as np
 from pathlib import Path
+import shutil
 
 
+
+def get_data_directory_path():
+    return os.path.join((Path(__file__).resolve().parent.parent),'data')
 
 
 def read_datafolder():
-        data_directory_path = os.path.join((Path(__file__).resolve().parent.parent),'data') 
+        data_directory_path = get_data_directory_path()
         files = os.listdir(data_directory_path)
-        files.remove('.gitkeep')
         print(files)
         file_path = os.path.join(data_directory_path,files[0])
         return pd.read_csv(file_path)
 
+def save_dataset(filename):
+    data_directory_path = get_data_directory_path()
+    if os.path.isdir(data_directory_path):
+        shutil.rmtree(data_directory_path)
+    os.mkdir(data_directory_path)
+    mongo_connection = Database()
+    print('yes')
+    mongo_df = mongo_connection.retrieve_data(filename)
+    mongo_df[0].to_csv(os.path.join(data_directory_path,filename))
+    print("file added")
+
+
 
 def save_uploaded_file(uploaded_file):
     try:
-        with open(os.path.join("src//data",uploaded_file.name),"wb") as f:
+        with open(os.path.join("src//data",  uploaded_file.name),"wb") as f:
             f.write(uploaded_file.getbuffer())
             return st.success("Saved file {} in data folder. ".format(uploaded_file.name))
     except Exception as e :
@@ -58,8 +73,8 @@ def save_cassandra_bundle(user,uploaded_file):
 ################################MongoDB################################################
 
 class Database:
-    ## Connect with cloud mongodb and create collection inside the database
-    def connect(self, table, client_secret ="mongodb+srv://eda:eda@cluster0.vqh6p.mongodb.net/myFirstDatabase?retryWrites=true&w=majority" ,db = "eda"):
+    
+    def connect(self, table, client_secret ="mongodb+srv://eda:eda@cluster0.vqh6p.mongodb.net/myFirstDatabase?retryWrites=true&w=majority" ,db = "dataset"):
         
         self.table = table
         
@@ -75,7 +90,7 @@ class Database:
 
     
 
-    def retrieve_data(self,table, client_secret=None, db=None):
+    def retrieve_data(self,table,client_secret=None, db=None):
         self.table =table
         if client_secret:
             self.mng_db, self.collection_name = self.connect(self.table, client_secret, db)
@@ -125,7 +140,7 @@ class Database:
 
         # create a DataFrame object from Series dictionary
         mongo_df = pd.DataFrame(df_series)
-        #self.load_data(self.table)
+
         #assinging the column names
         mongo_df.columns = column_list[1:]
         return mongo_df,  mongo_df.dtypes

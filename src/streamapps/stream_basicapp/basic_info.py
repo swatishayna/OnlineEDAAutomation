@@ -8,6 +8,7 @@ from src.utils.basic_def import Basic
 def app():
     basic = Basic()
     st.header("Basic Exploratory Data Analysis")
+
     dataframe = uploaded_file.read_datafolder()
     
 

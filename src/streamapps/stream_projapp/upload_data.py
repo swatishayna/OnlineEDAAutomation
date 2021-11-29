@@ -38,13 +38,17 @@ def app():
                 uploaded_file.save_uploaded_file(datafile)
                 file_name = datafile.name.split(".")[0]
                 #saving to mongo_db
-                uploaded_file.Database().upload_data(df,file_name)
-                
+                #uploaded_file.Database().upload_data(df,file_name)       #### This
         except Exception as e:
             message = "Something went Wrong with your CSV file. Kindly choose right advance options and try once again."
             st.error(message+ "\n {}".format(e))
             lg.error(message)
-    
+
+
+
+##################################################################################################################################  
+# 
+#  
     if select_source == 'Mongo-DB':
         
 
@@ -68,7 +72,7 @@ def app():
             ## saving file to local repo for temporary check
             
             uploaded_file.Database().save_mongodf(df,data_path,file_name+'.csv')
-            uploaded_file.Database().upload_data(df,file_name)
+            #uploaded_file.Database().upload_data(df,file_name)   #### This
             st.write("Data has been successfully uploaded")
 
 
@@ -189,23 +193,31 @@ def app():
             message = "Something went Wrong with your TVS file. Kindly choose right advance options and try once again."
             st.error(message+ "\n {}".format(e))
             lg.info(message)
-    
+######################################################################################################################################
+
+
+
+
     submit_form = st.button('Add Project')
     if submit_form:
         #email, Project_Name,description ,select_source 
+        
         cassandra = cassandra_user()
         user = cassandra.get_useraccount(f"SELECT * FROM user WHERE email = '{email}' ALLOW FILTERING ")
-        status = uploaded_file.Database().check_existing_collection(file_name)
         
-        if user.shape[0] >  0 and status:
-            project_name = email+'_'+Project_Name
-            try:
-
-                cassandra.add_project(f"INSERT INTO project (email, project_name, project_description, source, filename) VALUES ('{email}', '{project_name}', '{description}', '{select_source}','{file_name}')")
-                st.write("Project Added")
-            except Exception as e:
-                st.write("Issue ")
-                print(e)
+        
+        if user.shape[0] >  0 :
+            file = email + '_' + Project_Name + '_' + file_name
+            uploaded_file.Database().upload_data(df,file)
+            status = uploaded_file.Database().check_existing_collection(file)
+            if status:
+                project_name = email +'_'+ Project_Name
+                try:
+                    cassandra.add_project(f"INSERT INTO project (email, project_name, project_description, source, filename) VALUES ('{email}', '{project_name}', '{description}', '{select_source}','{file_name}')")
+                    st.write("Project Added")
+                except Exception as e:
+                    st.write("Issue ")
+                    print(e)
         else:
             st.write("Entered emailid is not registered")
 
