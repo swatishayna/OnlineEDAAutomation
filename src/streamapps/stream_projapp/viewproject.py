@@ -1,6 +1,6 @@
 import streamlit as st
 from src.utils.connection_cassandra import cassandra_user
-from src.utils.uploaded_file import Database,save_dataset
+from src.utils.uploaded_file import save_dataset, onlyprojname
 
 
 
@@ -10,10 +10,10 @@ def app():
     st.header("View Project")
     st.write("Reverify your credentials")
     
-    def onlyprojname(column):
-        for i in column:
-            i = str(i).split("_")[1]
-            return i
+    # def onlyprojname(column):
+    #     for i in column:
+    #         i = str(i).split("_")[1]
+    #         return i
 
 
     form = st.form(key='my-form')
@@ -34,8 +34,7 @@ def app():
             if current_project_name:
                 try:
                     file_name = project_list[project_list['existing_projects'] == current_project_name]['filename'].iloc[0]
-                    print("&&&&&&&", file_name)
-                    collection_name = email + '_' + current_project_name + '_' + file_name
+                    collection_name = email + '_' + current_project_name + '_onlineeda_' + file_name
                     try:
                         save_dataset(collection_name)
                     except:

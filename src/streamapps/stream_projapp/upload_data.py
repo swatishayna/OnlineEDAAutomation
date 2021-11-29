@@ -14,7 +14,7 @@ from src.utils.connection_cassandra import cassandra_user
 def app():
     st.header("Add Project")
     
-    
+    uploaded_file.delete_create_data_directory()
     
 
     email = st.text_input("Enter your registered emailid here")
@@ -207,7 +207,7 @@ def app():
         
         
         if user.shape[0] >  0 :
-            file = email + '_' + Project_Name + '_' + file_name
+            file = email + '_' + Project_Name + '_onlineeda_' + file_name
             uploaded_file.Database().upload_data(df,file)
             status = uploaded_file.Database().check_existing_collection(file)
             if status:

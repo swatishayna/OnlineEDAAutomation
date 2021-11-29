@@ -3,6 +3,7 @@ import numpy as np
 import plotly.express as px
 import os
 import plotly.graph_objects as go
+import chart_studio.plotly as py
 
 
 
@@ -12,6 +13,26 @@ class Visualization:
             return px.box(data, x = data[column] )
         else:
             return px.box(data, y = data[column] )
+
+    def frequency_plot(self,data,column):
+        dfg = data.groupby([column]).count()
+        fig = px.bar(dfg, x=dfg.index, y=dfg.iloc[:,0])
+        return fig
+
+    def cumulative_distribution_plot(self,data,column):
+        x = data[column].values.tolist()
+        cumsum = np.cumsum(x)
+
+        trace = go.Scatter(x=[i for i in range(len(cumsum))], y=10 * cumsum / np.linalg.norm(cumsum),
+                           marker=dict(color='rgb(150, 25, 120)'))
+        layout = go.Layout(
+            title="Cumulative Distribution Function"
+        )
+
+        fig = go.Figure(data=go.Data([trace]), layout=layout)
+        #return py.iplot(fig, filename='cdf-dataset')
+        return fig
+
 
 
     def boxplot_all(self,data, column_list,axis):

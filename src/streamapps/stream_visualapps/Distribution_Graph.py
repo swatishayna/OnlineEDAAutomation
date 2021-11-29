@@ -30,7 +30,7 @@ def app():
         for result in all_results:
             st.plotly_chart(result)
     else:
-        select_column = st.sidebar.selectbox('select your label col',
+        select_column = st.sidebar.selectbox('select  column',
                                         ([i for i in data_columns if data_type[i] == 'float64' or data_type[i] == 'int64']))
         st.subheader("Histogram for column", select_column)
         result = visual.distributionplot(data,select_column)

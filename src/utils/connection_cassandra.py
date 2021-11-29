@@ -45,3 +45,10 @@ class cassandra_user:
         # email text, project_name text PRIMARY KEY, project_description text, source text, filename text
         info = session.execute(query)
         return info.all()
+
+    def delete_record(self,query):
+        session = self.connect()
+        session.execute("USE user_account")
+        # email text, project_name text PRIMARY KEY, project_description text, source text, filename text
+        info = session.execute(query)
+        print("record_deleted")

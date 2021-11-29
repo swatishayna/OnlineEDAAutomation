@@ -1,17 +1,25 @@
+import pandas as pd
 import streamlit as st
-from src.utils.advanced_def import Advanced
-from src.utils import uploaded_file
+from src.utils.advanced_def import Advancedanalysis
+from src.utils import uploaded_file,visual_def
 
 
 def app():
-    advanced = Advanced()
+
     st.header("Missing value")
-    dataframe = uploaded_file.read_datafolder()
+    #dataframe = uploaded_file.read_datafolder()
+    dataframe = pd.read_csv('D:\data science\ineuron\Project\python project\OnlineEDAAutomation\OnlineEDAAutomation\src\streamapps\stream_advancedapp\diabetes.csv')
+    advanced = Advancedanalysis(dataframe)
 
-    data_columns = dataframe.columns
-    data_type = dataframe.dtypes
-    # feature_col = st.selectbox('X', data_columns)
 
-    submit = st.button("Show missing value")
-    if submit:
-        st.dataframe(advanced.get_missing_value(dataframe))
+    missing_value_df = advanced.get_missing_value()
+    st.dataframe(missing_value_df)
+    column_list = missing_value_df[missing_value_df['Missing Value Count'] > 0]['index'].to_list()
+    if len(column_list)>0:
+        graphical_view = st.checkbox("View graphical distribution of columns with missing values")
+        if graphical_view:
+            visual = visual_def.Visualization()
+            all_results = visual.distributionplot_all(dataframe,column_list)
+            for result in all_results:
+                st.plotly_chart(result)
+
