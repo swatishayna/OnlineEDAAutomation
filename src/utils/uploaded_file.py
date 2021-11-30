@@ -79,7 +79,7 @@ def save_cassandra_bundle(user,uploaded_file):
 ###################
 class Database:
 
-    def connect(self, table, client_secret=os.environ.get('EDA_INEURON_MONGO'),db="dataset"):
+    def connect(self, table, client_secret="mongodb+srv://eda:eda@cluster0.vqh6p.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",db="dataset"):
 
         self.table = table
         self.db = db
@@ -165,7 +165,6 @@ class Database:
         data.columns = columns_list
         return data
 
-
     def insert_data(self, table, df=None, filepath=None, extension=None, client_secret=None, db=None):
         try:
             if df is None:
@@ -204,7 +203,7 @@ class Database:
 
 
 class Database_mongoexit:
-    def connect(self,client_secret=os.environ.get('EDA_INEURON_MONGO'),db="dataset"):
+    def connect(self,client_secret="mongodb+srv://eda:eda@cluster0.vqh6p.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",db="dataset"):
         self.db = db
 
         client = pymongo.MongoClient(client_secret, ssl_cert_reqs=ssl.CERT_NONE)

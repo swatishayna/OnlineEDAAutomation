@@ -14,8 +14,10 @@ class cassandra_user:
         dir_path = os.path.join((Path(__file__).resolve().parent.parent.parent),'files')
         file_path = os.path.join(dir_path,'secure-connect-onlineedaautomation.zip')
         cloud_config= {'secure_connect_bundle': file_path}
-        auth_provider = PlainTextAuthProvider(os.environ.get('EDA_INEURON_CASSANDRA_CLIENTID'),
-                                              os.environ.get('EDA_INEURON_CASSANDRA_CLIENTSECRET'))
+        # auth_provider = PlainTextAuthProvider(os.environ.get('EDA_INEURON_CASSANDRA_CLIENTID'),
+        #                                       os.environ.get('EDA_INEURON_CASSANDRA_CLIENTSECRET'))
+        auth_provider = PlainTextAuthProvider('lmzksofvDqTOMcKEvCHkxxDq',
+                                              'QYJD5.tkio5FmTy.egAUkW,YoSi24UZRJcEeRerAA+0btYbZ6ZtSSdERAJeN.T.Wo_5no_GIxW0Dr+bc1R,Ue+3.,7-,cca6+bgQsezAUItB64U0zfkwvhn9DRn_bqXX')
 
         cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
         self.session = cluster.connect()
@@ -27,8 +29,6 @@ class cassandra_user:
         simple_statement = SimpleStatement(query, consistency_level=ConsistencyLevel.ONE)
         execute_result = session.execute(simple_statement, timeout=None)
         result = execute_result._current_rows
-        # user_detail = session.execute(query)
-        # return user_detail.all()
         return pd.DataFrame(result)
 
     def add_user(self, query):
