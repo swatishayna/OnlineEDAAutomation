@@ -1,10 +1,7 @@
 import streamlit as st
-from src.utils import uploaded_file
 import pandas as pd
 from src.utils.advanced_def import Advancedanalysis
-from src.utils.basic_def import Basic
 from src.utils import uploaded_file,visual_def
-import numpy as np
 
 
 def app():

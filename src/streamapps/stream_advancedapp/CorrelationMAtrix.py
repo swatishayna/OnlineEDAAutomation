@@ -1,9 +1,5 @@
 import streamlit as st
-import numpy as np
-from src.utils import advanced_def,uploaded_file
-import pandas as pd
-from src.streamapps.stream_projapp import upload_data
-from pathlib import Path
+from src.utils import advanced_def
 from src.utils import uploaded_file
 
 def app():
@@ -44,8 +40,7 @@ def app():
         number of concordant pairs minus the discordant pairs
         divided by the total number of pairs""")
 
-    user_choice = st.sidebar.radio("Choose",
-                                    ("View Correlation for all Columns", "View Correlation w.r.t Target column"))
+    user_choice = st.sidebar.radio("Choose",("View Correlation for all Columns", "View Correlation w.r.t Target column"))
 
     if user_choice == "View Correlation for all Columns":
         chosen_method = st.sidebar.selectbox('Select the method: ', ('pearson', 'spearman', 'kendall'))
@@ -62,8 +57,7 @@ def app():
     else:
         data_columns = data.columns
         data_type = data.dtypes
-        select_label = st.sidebar.selectbox('select your label col',
-                                            ([i for i in data_columns if data_type[i] == 'float64' or data_type[i] == 'int64']))
+        select_label = st.sidebar.selectbox('select your label col',([i for i in data_columns if data_type[i] == 'float64' or data_type[i] == 'int64']))
         
         if select_label:
             chosen_method = st.sidebar.selectbox('choose correlation type', ('pearson', 'spearman', 'kendall'))
