@@ -10,8 +10,8 @@ from src.streamapps.stream_projapp import upload_data, viewproject
 def app():
     local = MultiPage()
 
-    local.add_page("Add Project",  upload_data.app)
-    local.add_page("View Project", viewproject.app)
+    local.add_page("Add and Start Project",  upload_data.app)
+    local.add_page("View and Start Project", viewproject.app)
 
 
 

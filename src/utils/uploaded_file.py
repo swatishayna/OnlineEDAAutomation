@@ -21,11 +21,14 @@ def delete_create_data_directory():
     os.mkdir(data_directory_path)
 
 def read_datafolder():
+    try:
         data_directory_path = get_data_directory_path()
         files = os.listdir(data_directory_path)
         print(files)
         file_path = os.path.join(data_directory_path,files[0])
         return pd.read_csv(file_path)
+    except:
+        return "Start Project (Project Dashboard-->Add Project or Project Dashboard-->View Project"
 
 def onlyprojname(column):
     for i in column:
