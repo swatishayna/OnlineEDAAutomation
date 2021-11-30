@@ -1,4 +1,3 @@
-
 pymongo
 plotly
 pandas_profiling
@@ -6,6 +5,11 @@ streamlit-pandas-profiling
 openpyxl
 streamlit
 mysql-connector-python
-atexit
+numpy
+pathlib
+plotly
+cassandra-driver==3.25.0
+gunicorn
+chart_studio
 
 

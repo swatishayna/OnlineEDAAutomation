@@ -7,8 +7,8 @@ from src.utils import uploaded_file,visual_def
 def app():
 
     st.header("Missing value")
-    #dataframe = uploaded_file.read_datafolder()
-    dataframe = pd.read_csv('D:\data science\ineuron\Project\python project\OnlineEDAAutomation\OnlineEDAAutomation\src\streamapps\stream_advancedapp\diabetes.csv')
+    dataframe = uploaded_file.read_datafolder()
+    #dataframe = pd.read_csv('D:\data science\ineuron\Project\python project\OnlineEDAAutomation\OnlineEDAAutomation\src\streamapps\stream_advancedapp\diabetes.csv')
     advanced = Advancedanalysis(dataframe)
 
 

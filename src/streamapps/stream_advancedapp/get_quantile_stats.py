@@ -1,16 +1,15 @@
 import streamlit as st
 from src.utils.advanced_def import Advancedanalysis
 from src.utils import uploaded_file
-import pandas as pd
 import numpy as np
-from src.utils.basic_def import Basic
+
 
 def app():
 
-    basic = Basic()
+
     st.header("Column Analysis with Quantile Analysis")
-    #dataframe = uploaded_file.read_datafolder()
-    dataframe = pd.read_csv('D:\data science\ineuron\Project\python project\OnlineEDAAutomation\OnlineEDAAutomation\src\streamapps\stream_advancedapp\diabetes.csv')
+    dataframe = uploaded_file.read_datafolder()
+    #dataframe = pd.read_csv('D:\data science\ineuron\Project\python project\OnlineEDAAutomation\OnlineEDAAutomation\src\streamapps\stream_advancedapp\diabetes.csv')
     advanced = Advancedanalysis(dataframe)
 
     categorical = st.checkbox("View  Analysis of Categorical Columns")

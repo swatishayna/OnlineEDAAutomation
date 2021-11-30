@@ -1,5 +1,4 @@
 import streamlit as st
-import pandas as pd
 import ssl
 import pymongo
 import os
@@ -15,12 +14,12 @@ import shutil
 def get_data_directory_path():
     return os.path.join((Path(__file__).resolve().parent.parent),'data')
 
-
 def delete_create_data_directory():
     data_directory_path = get_data_directory_path()
     if os.path.isdir(data_directory_path):
         shutil.rmtree(data_directory_path)
     os.mkdir(data_directory_path)
+
 def read_datafolder():
         data_directory_path = get_data_directory_path()
         files = os.listdir(data_directory_path)
@@ -32,6 +31,7 @@ def onlyprojname(column):
     for i in column:
         i = str(i).split("_")[1]
         return i
+
 def save_dataset(filename):
     delete_create_data_directory()
     data_directory_path = get_data_directory_path()
@@ -40,8 +40,6 @@ def save_dataset(filename):
     mongo_df = mongo_connection.retrieve_data(table = filename)
     mongo_df[0].to_csv(os.path.join(data_directory_path,filename))
     print("file added")
-
-
 
 def save_uploaded_file(uploaded_file):
     try:
@@ -81,9 +79,7 @@ def save_cassandra_bundle(user,uploaded_file):
 ###################
 class Database:
 
-    def connect(self, table,
-                client_secret="mongodb+srv://eda:eda@cluster0.vqh6p.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-                db="dataset"):
+    def connect(self, table, client_secret=os.environ.get('EDA_INEURON_MONGO'),db="dataset"):
 
         self.table = table
         self.db = db
@@ -169,7 +165,7 @@ class Database:
         data.columns = columns_list
         return data
 
-    # inserting data into mongodatabase , calling readadata->get_path->connect()
+
     def insert_data(self, table, df=None, filepath=None, extension=None, client_secret=None, db=None):
         try:
             if df is None:
@@ -208,7 +204,7 @@ class Database:
 
 
 class Database_mongoexit:
-    def connect(self,client_secret="mongodb+srv://eda:eda@cluster0.vqh6p.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",db="dataset"):
+    def connect(self,client_secret=os.environ.get('EDA_INEURON_MONGO'),db="dataset"):
         self.db = db
 
         client = pymongo.MongoClient(client_secret, ssl_cert_reqs=ssl.CERT_NONE)

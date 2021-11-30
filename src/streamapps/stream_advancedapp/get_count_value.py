@@ -6,8 +6,8 @@ import pandas as pd
 def app():
 
     st.header("Visualisation Analysis")
-    #dataframe = uploaded_file.read_datafolder()
-    dataframe = pd.read_csv('D:\data science\ineuron\Project\python project\OnlineEDAAutomation\OnlineEDAAutomation\src\streamapps\stream_advancedapp\diabetes.csv')
+    dataframe = uploaded_file.read_datafolder()
+    #dataframe = pd.read_csv('D:\data science\ineuron\Project\python project\OnlineEDAAutomation\OnlineEDAAutomation\src\streamapps\stream_advancedapp\diabetes.csv')
     advanced = Advancedanalysis(dataframe)
     st.write(advanced.get_count_value())
 

@@ -1,8 +1,6 @@
 import pandas as pd
-import numpy as np
 import plotly.express as px
-import os
-from pathlib import Path
+
 
 
 
@@ -25,6 +23,7 @@ class Advanced:
         categorical_stats_dict['Top most common value'] = df[column].describe().loc['top']
         categorical_stats_dict['Frequency of the most common value'] = df[column].describe().loc['freq']
         return categorical_stats_dict
+
     def get_count_value(self, df):
 
         d = {}
@@ -122,7 +121,6 @@ class Advancedanalysis:
             else:
                 category_count_df = pd.DataFrame(category_count_df).sort_values('Count', ascending=False)
             return category_count_df
-
 
     def get_zero_count_detail(self,column):
         zero_count_dict = {}

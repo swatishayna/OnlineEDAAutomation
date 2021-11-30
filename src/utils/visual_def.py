@@ -1,7 +1,5 @@
-import pandas as pd
 import numpy as np
 import plotly.express as px
-import os
 import plotly.graph_objects as go
 import chart_studio.plotly as py
 
@@ -33,8 +31,6 @@ class Visualization:
         #return py.iplot(fig, filename='cdf-dataset')
         return fig
 
-
-
     def boxplot_all(self,data, column_list,axis):
         all_boxplot = []
         for col in column_list:
@@ -44,7 +40,6 @@ class Visualization:
                 fig = px.box(data, y = data[col] )
             all_boxplot.append(fig)
         return all_boxplot
-
 
     def distributionplot(self, data, column):
         try:
@@ -59,7 +54,6 @@ class Visualization:
             all_distplot.append(fig)
         return all_distplot
 
-
     def linechart(self,data,feature_x,feature_y):
         x_axis = list(data[feature_x])
         y_axis = list(data[feature_y])
@@ -69,8 +63,6 @@ class Visualization:
             return fig
         except:
             return "Plot cant be generated due to data insufficiency"
-        
-
 
     def meshplot(self,data,feature_x, feature_y,feature_z,feature_size):
         x_axis = list(data[feature_x])
@@ -82,7 +74,6 @@ class Visualization:
              return fig
         except:
             return "Plot cant be generated due to data insufficiency"
-        
 
     def piechart(self,data,feature_values,feature_names):
         fig = px.pie(data, values=feature_values, names =feature_names )
@@ -118,7 +109,6 @@ class Visualization:
             return fig
         except:
             return "Plot cant be generated due to data insufficiency"
-
 
     def surfaceplot(self,data,feature_x,feature_y,feature_z):
         x_axis = list(data[feature_x])

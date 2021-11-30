@@ -6,8 +6,8 @@ import pandas as pd
 
 def app():
 
-    #dataframe = uploaded_file.read_datafolder()
-    dataframe = pd.read_csv('D:\data science\ineuron\Project\python project\OnlineEDAAutomation\OnlineEDAAutomation\src\streamapps\stream_advancedapp\diabetes.csv')
+    dataframe = uploaded_file.read_datafolder()
+    #dataframe = pd.read_csv('D:\data science\ineuron\Project\python project\OnlineEDAAutomation\OnlineEDAAutomation\src\streamapps\stream_advancedapp\diabetes.csv')
     advanced = Advancedanalysis(dataframe)
 
     aggregate_fun_list = ["sum", "count", "describe", "mean", "median"]
