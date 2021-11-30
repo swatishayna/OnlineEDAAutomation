@@ -9,12 +9,6 @@ from src.utils.uploaded_file import save_dataset, onlyprojname
 def app():
     st.header("View Project")
     st.write("Reverify your credentials")
-    
-    # def onlyprojname(column):
-    #     for i in column:
-    #         i = str(i).split("_")[1]
-    #         return i
-
 
     form = st.form(key='my-form')
 
