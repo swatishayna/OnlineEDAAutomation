@@ -15,6 +15,7 @@ def app():
     advanced = Advancedanalysis(dataframe)
 
     option = st.sidebar.radio("View  Complete Analysis of Selected Column", ("numerical_columns","categorical columns"))
+
     if option =="categorical columns":
         categorical_column_list = [column for column in dataframe.columns if dataframe[column].dtypes == 'object']
         categorical_column = st.sidebar.selectbox("Select Column", categorical_column_list)

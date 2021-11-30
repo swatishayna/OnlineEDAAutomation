@@ -51,7 +51,7 @@ def app():
         chosen_method = st.sidebar.selectbox('Select the method: ', ('pearson', 'spearman', 'kendall'))
         graph_matrix_choice = st.selectbox("", ('Graph', 'Matrix'))
         st.write(chosen_method.capitalize() + " Correlation Matrix")
-        result = analysis.generate_matrix_graph(chosen_method, graph_matrix_choice)
+        result = analysis.get_matrix_graph(chosen_method, graph_matrix_choice)
         if graph_matrix_choice == 'Matrix':
             st.write(result)
         else:
@@ -71,7 +71,7 @@ def app():
                 st.subheader(
                     chosen_method.capitalize() + " Correlation Matrix wrt Target " + select_label + " method- " + chosen_method)
 
-                result = analysis.generate_label_correlation(chosen_method, select_label)
+                result = analysis.get_label_correlation(chosen_method, select_label)
                 
                 try:
                     st.write(result[0])

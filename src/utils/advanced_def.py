@@ -53,7 +53,7 @@ class Advancedanalysis:
     def __init__(self, data):
         self.data = data
 
-    def generate_matrix_graph(self, chosen_method, graph_matrix):
+    def get_matrix_graph(self, chosen_method, graph_matrix):
 
         if graph_matrix == 'Matrix':
             try:
@@ -66,7 +66,7 @@ class Advancedanalysis:
             fig = px.imshow(self.data.corr(method=chosen_method))
             return fig
 
-    def generate_label_correlation(self, chosen_method, label):
+    def get_label_correlation(self, chosen_method, label):
         try:
             matrix = self.data.corr(method=chosen_method)[label]
             write = self.data.corr(method=chosen_method)[[label]].sort_values(by=label, ascending=False)
@@ -109,12 +109,19 @@ class Advancedanalysis:
             d[key] = self.data[column].nunique()
         return d
 
-    def get_categories(self,column):
+    def get_categories(self,column,order=None):
         category_count_df = pd.DataFrame()
         category_count_df['categories'] = self.data[column].value_counts().index
         category_count_df['Count'] = self.data[column].value_counts().values
         category_count_df['Count_Percentage'] = (self.data[column].value_counts().values / self.data[column].notnull().sum()) * 100
-        return category_count_df
+        if order is None :
+            return category_count_df
+        else:
+            if order == "ascending":
+                category_count_df = pd.DataFrame(category_count_df).sort_values('Count', ascending=True)
+            else:
+                category_count_df = pd.DataFrame(category_count_df).sort_values('Count', ascending=False)
+            return category_count_df
 
 
     def get_zero_count_detail(self,column):
@@ -122,3 +129,25 @@ class Advancedanalysis:
         zero_count_dict['Total zeroes in the column'] = self.data[self.data[column] == 0].shape[0]
         zero_count_dict['Percentage of Total zeroes in the column'] = (self.data[self.data[column] == 0].shape[0]/self.data.shape[0])*100
         return zero_count_dict
+
+    def get_sorted_column(self, column, order, value_head):
+        data = self.data.copy()
+        if order == "ascending":
+            sorted_df = pd.DataFrame(data).sort_values(column,ascending=True).head(value_head)
+        else:
+            sorted_df = pd.DataFrame(data).sort_values(column, ascending=False).head(value_head)
+        return sorted_df
+
+    def get_group(self,column,aggregate_func):
+        df = pd.DataFrame(self.data.copy())
+        if aggregate_func=="sum":
+            df= df.groupby(column).sum()
+        elif aggregate_func=="count":
+            df = df.groupby(column).count()
+        elif aggregate_func=="describe":
+            df = df.groupby(column).describe()
+        elif aggregate_func=="mean":
+            df = df.groupby(column).mean()
+        elif aggregate_func == "median":
+            df = df.groupby(column).mean()
+        return df
