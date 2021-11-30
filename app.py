@@ -2,12 +2,12 @@ import streamlit as st
 
 # Custom imports
 from src.streamapps.multipage import MultiPage
-from src.streamapps import edabasic,edaadvanced,visual,upload
+from src.streamapps import edabasic,edaadvanced,edavisual,edaupload,suggestion
 import os
 import shutil
 from src.utils.uploaded_file import get_data_directory_path
 import atexit
-from src.utils.uploaded_file import Database,Database_mongoexit
+from src.utils.uploaded_file import Database_mongoexit
 from src.utils.connection_cassandra import cassandra_user
 from src.utils.uploaded_file import onlyprojname
 import numpy as np
@@ -42,10 +42,11 @@ try:
     apps = MultiPage()
 
     # Add all your applications (pages) here
-    apps.add_page("Project Dashboard", upload.app)
+    apps.add_page("Project Dashboard", edaupload.app)
     apps.add_page("BasicEDA",    edabasic.app)
     apps.add_page("AdvancedEDA", edaadvanced.app)
-    apps.add_page("VisualEDA",   visual.app)
+    apps.add_page("VisualEDA", edavisual.app)
+    apps.add_page("Suggestion Page", suggestion.app)
 except:
     pass
 
