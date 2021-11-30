@@ -8,13 +8,16 @@ def app():
     st.header("Visualisation Analysis")
     dataframe = uploaded_file.read_datafolder()
     #dataframe = pd.read_csv('D:\data science\ineuron\Project\python project\OnlineEDAAutomation\OnlineEDAAutomation\src\streamapps\stream_advancedapp\diabetes.csv')
-    advanced = Advancedanalysis(dataframe)
-    st.write(advanced.get_count_value())
+    if dataframe == "Start Project (Project Dashboard-->Add Project or Project Dashboard-->View Project":
+        st.write(dataframe)
+    else:
+        advanced = Advancedanalysis(dataframe)
+        st.write(advanced.get_count_value())
 
 
 
-    column = st.selectbox("View Frequency of datapoints of Column", dataframe.columns)
-    if column:
-        st.dataframe(advanced.get_categories(column))
+        column = st.selectbox("View Frequency of datapoints of Column", dataframe.columns)
+        if column:
+            st.dataframe(advanced.get_categories(column))
 
 

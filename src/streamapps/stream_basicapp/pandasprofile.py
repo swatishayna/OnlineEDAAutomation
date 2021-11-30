@@ -13,8 +13,9 @@ def app():
    
     st.header("Basic Exploratory Data Analysis")
     dataframe = uploaded_file.read_datafolder()
-    
-    pr = ProfileReport(dataframe, explorative=True, minimal=True,correlations={"cramers": {"calculate": False}})
-    
-    st.header('*Exploratory Data Analysis Fast Report*')
-    st_profile_report(pr)
+    if dataframe == "Start Project (Project Dashboard-->Add Project or Project Dashboard-->View Project":
+        st.write(dataframe)
+    else:
+        pr = ProfileReport(dataframe, explorative=True, minimal=True,correlations={"cramers": {"calculate": False}})
+        st.header('*Exploratory Data Analysis Fast Report*')
+        st_profile_report(pr)

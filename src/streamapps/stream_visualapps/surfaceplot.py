@@ -11,21 +11,24 @@ def app():
 
     st.header("Visualisation Analysis")
     data = uploaded_file.read_datafolder()
-    data_columns = data.columns
-    data_type = data.dtypes
-    
+    if data == "Start Project (Project Dashboard-->Add Project or Project Dashboard-->View Project":
+        st.write(data)
+    else:
+        data_columns = data.columns
+        data_type = data.dtypes
 
-    visual = visual_def.Visualization()
-    
-    col1, col2,col3 = st.columns(3)
-    feature_x = col1.selectbox('X', data_columns)
-    feature_y = col2.selectbox('Y',data_columns)
-    feature_z = col3.selectbox('Z', data_columns)
 
-    submit = st.button("ShowPlot")
-    if submit:
-        result = visual.surfaceplot(data,feature_x,feature_y,feature_z)
-        try:
-            st.plotly_chart(result)
-        except:
-            st.write(result)
+        visual = visual_def.Visualization()
+
+        col1, col2,col3 = st.columns(3)
+        feature_x = col1.selectbox('X', data_columns)
+        feature_y = col2.selectbox('Y',data_columns)
+        feature_z = col3.selectbox('Z', data_columns)
+
+        submit = st.button("ShowPlot")
+        if submit:
+            result = visual.surfaceplot(data,feature_x,feature_y,feature_z)
+            try:
+                st.plotly_chart(result)
+            except:
+                st.write(result)
