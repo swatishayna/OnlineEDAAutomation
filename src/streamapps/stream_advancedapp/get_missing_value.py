@@ -1,4 +1,3 @@
-import pandas as pd
 import streamlit as st
 from src.utils.advanced_def import Advancedanalysis
 from src.utils import uploaded_file,visual_def
@@ -6,9 +5,8 @@ from src.utils import uploaded_file,visual_def
 
 def app():
 
-    st.header("Missing value")
+    st.header("Advanced Exploratory Data Analysis")
     dataframe = uploaded_file.read_datafolder()
-    #dataframe = pd.read_csv('D:\data science\ineuron\Project\python project\OnlineEDAAutomation\OnlineEDAAutomation\src\streamapps\stream_advancedapp\diabetes.csv')
     if dataframe == "Start Project (Project Dashboard-->Add Project or Project Dashboard-->View Project":
         st.write(dataframe)
     else:

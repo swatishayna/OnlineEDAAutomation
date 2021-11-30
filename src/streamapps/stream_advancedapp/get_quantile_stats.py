@@ -7,9 +7,8 @@ import numpy as np
 def app():
 
 
-    st.header("Column Analysis with Quantile Analysis")
+    st.header("Advanced Exploratory Data Analysis")
     dataframe = uploaded_file.read_datafolder()
-    #dataframe = pd.read_csv('D:\data science\ineuron\Project\python project\OnlineEDAAutomation\OnlineEDAAutomation\src\streamapps\stream_advancedapp\diabetes.csv')
     if dataframe == "Start Project (Project Dashboard-->Add Project or Project Dashboard-->View Project":
         st.write(dataframe)
     else:

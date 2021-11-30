@@ -1,7 +1,4 @@
 import streamlit as st
-import pandas as pd
-from pathlib import Path
-import os
 from src.utils import uploaded_file
 from src.utils.basic_def import Basic
 

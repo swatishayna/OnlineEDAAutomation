@@ -1,16 +1,10 @@
 import streamlit as st
-import numpy as np
-from src.utils import advanced_def,visual_def
-import pandas as pd
-from src.streamapps.stream_projapp import upload_data
-from pathlib import Path
+from src.utils import visual_def
 from src.utils import uploaded_file
 
 
 def app():
-
-       
-    st.header("Visualisation Analysis")
+    st.header("Advanced Exploratory Visual Data Analysis")
     data = uploaded_file.read_datafolder()
     if data == "Start Project (Project Dashboard-->Add Project or Project Dashboard-->View Project":
         st.write(data)
