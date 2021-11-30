@@ -1,8 +1,7 @@
-import pandas as pd
 import numpy as np
 import plotly.express as px
-import os
 import plotly.graph_objects as go
+import chart_studio.plotly as py
 
 
 
@@ -13,6 +12,24 @@ class Visualization:
         else:
             return px.box(data, y = data[column] )
 
+    def frequency_plot(self,data,column):
+        dfg = data.groupby([column]).count()
+        fig = px.bar(dfg, x=dfg.index, y=dfg.iloc[:,0])
+        return fig
+
+    def cumulative_distribution_plot(self,data,column):
+        x = data[column].values.tolist()
+        cumsum = np.cumsum(x)
+
+        trace = go.Scatter(x=[i for i in range(len(cumsum))], y=10 * cumsum / np.linalg.norm(cumsum),
+                           marker=dict(color='rgb(150, 25, 120)'))
+        layout = go.Layout(
+            title="Cumulative Distribution Function"
+        )
+
+        fig = go.Figure(data=go.Data([trace]), layout=layout)
+        #return py.iplot(fig, filename='cdf-dataset')
+        return fig
 
     def boxplot_all(self,data, column_list,axis):
         all_boxplot = []
@@ -23,7 +40,6 @@ class Visualization:
                 fig = px.box(data, y = data[col] )
             all_boxplot.append(fig)
         return all_boxplot
-
 
     def distributionplot(self, data, column):
         try:
@@ -38,7 +54,6 @@ class Visualization:
             all_distplot.append(fig)
         return all_distplot
 
-
     def linechart(self,data,feature_x,feature_y):
         x_axis = list(data[feature_x])
         y_axis = list(data[feature_y])
@@ -48,8 +63,6 @@ class Visualization:
             return fig
         except:
             return "Plot cant be generated due to data insufficiency"
-        
-
 
     def meshplot(self,data,feature_x, feature_y,feature_z,feature_size):
         x_axis = list(data[feature_x])
@@ -61,7 +74,6 @@ class Visualization:
              return fig
         except:
             return "Plot cant be generated due to data insufficiency"
-        
 
     def piechart(self,data,feature_values,feature_names):
         fig = px.pie(data, values=feature_values, names =feature_names )
@@ -97,7 +109,6 @@ class Visualization:
             return fig
         except:
             return "Plot cant be generated due to data insufficiency"
-
 
     def surfaceplot(self,data,feature_x,feature_y,feature_z):
         x_axis = list(data[feature_x])
