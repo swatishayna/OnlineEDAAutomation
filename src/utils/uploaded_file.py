@@ -24,11 +24,13 @@ def read_datafolder():
     try:
         data_directory_path = get_data_directory_path()
         files = os.listdir(data_directory_path)
-        print(files)
         file_path = os.path.join(data_directory_path,files[0])
-        return pd.read_csv(file_path)
+        df = pd.read_csv(file_path)
+        return df
     except:
-        return "Start Project (Project Dashboard-->Add Project or Project Dashboard-->View Project"
+        return "There is no Project Running!!Start Project (Project Dashboard-->Add Project or Project Dashboard-->View Project)"
+
+
 
 def onlyprojname(column):
     for i in column:
@@ -39,9 +41,9 @@ def save_dataset(filename):
     delete_create_data_directory()
     data_directory_path = get_data_directory_path()
     mongo_connection = Database()
-
+    print(filename)
     mongo_df = mongo_connection.retrieve_data(table = filename)
-    mongo_df[0].to_csv(os.path.join(data_directory_path,filename))
+    mongo_df[0].to_csv(os.path.join(data_directory_path,filename),index = False)
     print("file added")
 
 def save_uploaded_file(uploaded_file):
@@ -87,19 +89,21 @@ class Database:
         self.table = table
         self.db = db
 
-        client = pymongo.MongoClient(client_secret, ssl_cert_reqs=ssl.CERT_NONE)
-
+        #client = pymongo.MongoClient(client_secret, ssl_cert_reqs=ssl.CERT_NONE)
+        client = pymongo.MongoClient(client_secret)
         self.mng_db = client[self.db]
         self.collection_name = self.table
+        print("66666666666666666666666666666666666666")
         return self.mng_db, self.collection_name
 
     def retrieve_data(self, table, client_secret=None, db=None):
+
         self.table = table
         if client_secret:
             self.mng_db, self.collection_name = self.connect(self.table, client_secret, db)
         else:
             self.mng_db, self.collection_name = self.connect(self.table)
-
+        print("fgfdsh%%%%%%%%%%%%%%%%%%%%%")
         # fetching the list of column_names of the data stored
         record = self.mng_db[self.table].find_one()
         column_list = [key for key in record]
@@ -209,12 +213,19 @@ class Database_mongoexit:
     def connect(self,client_secret="mongodb+srv://eda:eda@cluster0.vqh6p.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",db="dataset"):
         self.db = db
 
-        client = pymongo.MongoClient(client_secret, ssl_cert_reqs=ssl.CERT_NONE)
+        client = pymongo.MongoClient(client_secret)
         self.mng_db = client[self.db]
-        return self.mng_db
+        return self.mng_db,client
 
     def get_collection_list(self):
-        self.mng_db = self.connect()
+        self.mng_db = self.connect()[0]
         print("yes")
         collection_list = self.mng_db.list_collection_names()
         return collection_list
+    def close_connection(self):
+        try:
+            obj = self.connect()[1]
+            obj.close()
+            return True
+        except:
+            return False

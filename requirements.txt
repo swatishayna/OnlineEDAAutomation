@@ -1,4 +1,4 @@
-pymongo==3.5.1
+pymongo
 plotly
 pandas_profiling
 streamlit-pandas-profiling
@@ -12,5 +12,5 @@ cassandra-driver==3.25.0
 gunicorn
 chart_studio
 pymongo[srv]
-
+dnspython
 

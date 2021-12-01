@@ -7,9 +7,9 @@ from src.utils import uploaded_file
 def app():
     st.header("Advanced Exploratory Data Analysis")
     dataframe = uploaded_file.read_datafolder()
-    if dataframe == "Start Project (Project Dashboard-->Add Project or Project Dashboard-->View Project":
+    try:
         st.write(dataframe)
-    else:
+    except:
         advanced = Advancedanalysis(dataframe)
 
         aggregate_fun_list = ["sum", "count", "describe", "mean", "median"]

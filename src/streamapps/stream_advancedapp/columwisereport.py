@@ -6,9 +6,9 @@ from src.utils import uploaded_file,visual_def
 def app():
     st.header("Advanced Exploratory Data Analysis")
     dataframe = uploaded_file.read_datafolder()
-    if dataframe == "Start Project (Project Dashboard-->Add Project or Project Dashboard-->View Project":
+    try:
         st.write(dataframe)
-    else:
+    except:
         advanced = Advancedanalysis(dataframe)
 
         option = st.sidebar.radio("View  Complete Analysis of Selected Column", ("numerical_columns","categorical columns"))

@@ -9,9 +9,9 @@ def app():
 
     st.header("Advanced Exploratory Data Analysis")
     dataframe = uploaded_file.read_datafolder()
-    if dataframe == "Start Project (Project Dashboard-->Add Project or Project Dashboard-->View Project":
+    try:
         st.write(dataframe)
-    else:
+    except:
         advanced = Advancedanalysis(dataframe)
 
         categorical = st.checkbox("View  Analysis of Categorical Columns")

@@ -31,6 +31,7 @@ def app():
                     collection_name = email + '_' + current_project_name + '_onlineeda_' + file_name
                     try:
                         save_dataset(collection_name)
+                        st.write("Configuration Donne. ")
                     except:
                         st.write("Dataset doesnt exist Provide Dataset")
 

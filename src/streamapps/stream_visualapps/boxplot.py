@@ -7,9 +7,9 @@ def app():
        
     st.header("Advanced Exploratory Visual Data Analysis")
     data = uploaded_file.read_datafolder()
-    if data == "Start Project (Project Dashboard-->Add Project or Project Dashboard-->View Project":
+    try:
         st.write(data)
-    else:
+    except:
         data_columns = data.columns
         data_type = data.dtypes
 

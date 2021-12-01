@@ -10,9 +10,9 @@ def app():
     st.header("Basic Exploratory Data Analysis")
 
     dataframe = uploaded_file.read_datafolder()
-    if dataframe == "Start Project (Project Dashboard-->Add Project or Project Dashboard-->View Project":
+    try:
         st.write(dataframe)
-    else:
+    except:
         option = st.sidebar.radio("Select",("Head","Tail"))
         if option == "Head":
             value = st.number_input("Input the number of rows", max_value=dataframe.shape[0],min_value=1)
