@@ -25,7 +25,10 @@ def read_datafolder():
         data_directory_path = get_data_directory_path()
         files = os.listdir(data_directory_path)
         file_path = os.path.join(data_directory_path,files[0])
-        df = pd.read_csv(file_path)
+        try:
+            df = pd.read_csv(file_path)
+        except:
+            df = pd.read_excel(file_path)
         return df
     except:
         return "There is no Project Running!!Start Project (Project Dashboard-->Add Project or Project Dashboard-->View Project)"

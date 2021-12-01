@@ -12,4 +12,4 @@ cassandra-driver==3.25.0
 gunicorn
 chart_studio
 dnspython==1.16.0
-
+xlrd
