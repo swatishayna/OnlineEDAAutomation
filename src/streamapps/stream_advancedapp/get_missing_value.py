@@ -8,10 +8,7 @@ def app():
     st.header("Advanced Exploratory Data Analysis")
     dataframe = uploaded_file.read_datafolder()
     try:
-        st.write(dataframe)
-    except:
         advanced = Advancedanalysis(dataframe)
-
 
         missing_value_df = advanced.get_missing_value()
         st.dataframe(missing_value_df)
@@ -23,4 +20,5 @@ def app():
                 all_results = visual.distributionplot_all(dataframe,column_list)
                 for result in all_results:
                     st.plotly_chart(result)
-
+    except:
+        st.write(dataframe)

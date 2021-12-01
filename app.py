@@ -29,7 +29,7 @@ def on_exit():
     remove_projects = delete_project_df['project_name'].to_list()
     print(remove_projects)
     cassandra.delete_record(f"DELETE FROM project WHERE project_name IN {tuple(remove_projects)}")
-
+    mongo_Stop = Database_mongoexit().close_connection()
     print("Program Stopped")
 
 

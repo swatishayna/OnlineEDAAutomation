@@ -7,8 +7,6 @@ def app():
     st.header("Advanced Exploratory Data Analysis")
     dataframe = uploaded_file.read_datafolder()
     try:
-        st.write(dataframe)
-    except:
         advanced = Advancedanalysis(dataframe)
 
         option = st.sidebar.radio("View  Complete Analysis of Selected Column", ("numerical_columns","categorical columns"))
@@ -86,4 +84,6 @@ def app():
                 axis = st.radio("Rotate the graph", ['x axis', 'y axis'])
                 result = visual.boxplot(dataframe, numerical_column,axis)
                 st.plotly_chart(result)
+    except:
+        st.write(dataframe)
 

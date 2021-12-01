@@ -8,16 +8,9 @@ def app():
     st.header("Advanced Exploratory Visual Data Analysis")
     data = uploaded_file.read_datafolder()
     try:
-        st.write(data)
-    except:
         data_columns = data.columns
         data_type = data.dtypes
-
-
         visual = visual_def.Visualization()
-
-
-
 
         choice = st.sidebar.radio("",["Generate histogram for all columns", "Select the Column"])
         if choice == "Generate histogram for all columns":
@@ -33,3 +26,5 @@ def app():
             st.subheader("Histogram for column", select_column)
             result = visual.distributionplot(data,select_column)
             st.plotly_chart(result)
+    except:
+        st.write(data)

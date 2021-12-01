@@ -7,9 +7,6 @@ def app():
     st.header("Advanced Exploratory Data Analysis")
     data = uploaded_file.read_datafolder()
     try:
-        st.write(data)
-    except:
-
         analysis = advanced_def.Advancedanalysis(data)
 
         def description():
@@ -77,3 +74,5 @@ def app():
                     except:
                         st.write(result)
                     description()
+    except:
+        st.write(data)

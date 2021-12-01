@@ -3,8 +3,6 @@ from src.utils import uploaded_file
 import pandas as pd
 import os
 import logging as lg
-from xml.etree import ElementTree as ET
-from pathlib import Path
 from src.utils.connection_cassandra import cassandra_user
 
 
@@ -37,8 +35,7 @@ def app():
                 st.dataframe(df)
                 uploaded_file.save_uploaded_file(datafile)
                 file_name = datafile.name.split(".")[0]
-                #saving to mongo_db
-                #uploaded_file.Database().upload_data(df,file_name)       #### This
+
         except Exception as e:
             message = "Something went Wrong with your CSV file. Kindly choose right advance options and try once again."
             st.error(message+ "\n {}".format(e))
@@ -49,31 +46,45 @@ def app():
 ##################################################################################################################################  
 # 
 #  
-    if select_source == 'Mongo-DB':
-        
+#     if select_source == 'Mongo-DB':
+#
+#         form = st.form(key='my-form')
+#         db = form.text_input("Enter the name of your database here")
+#         client_secret = form.text_input("Enter client secret here")
+#         file_name = form.text_input("Enter the name of collection here")
+#
+#         submit = form.form_submit_button('UploadData')
+#
+#         st.write('Press UploadData to continue')
+#
+#         if submit:
+#             mongo_result = uploaded_file.Database().retrieve_data(file_name,client_secret, db)
+#             df = pd.DataFrame(mongo_result[0]).reset_index(drop=True)
+#             st.dataframe(df)
+#
+#             ## saving file to local repo for temporary check
+#             uploaded_file.Database().save_mongodf(df,filename=file_name)
+#             st.write("Data has been successfully uploaded")
+    elif select_source == 'Mongo-DB':
 
-        form = st.form(key='my-form')
-        db = form.text_input("Enter the name of your database here")
-        client_secret = form.text_input("Enter client secret here")
-        file_name = form.text_input("Enter the name of collection here")
-        
-        submit = form.form_submit_button('UploadData')
 
-        st.write('Press UploadData to continue')
+        db = st.text_input("Enter the name of your database here")
+        client_secret = st.text_input("Enter client secret here")
+        file_name = st.text_input("Enter the name of collection here")
 
-        if submit:
-        
-            data_path = os.path.join((Path(__file__).resolve().parent.parent.parent),'data')
-            #filename = table
-            mongo_result = uploaded_file.Database().retrieve_data(file_name,client_secret, db)
-            df = pd.DataFrame(mongo_result[0]).reset_index(drop=True)
-            st.dataframe(df)
+        try:
+            if db is not None and client_secret is not None and file_name is not None:
+                mongo_result = uploaded_file.Database().retrieve_data(file_name, client_secret, db)
+                df = pd.DataFrame(mongo_result[0]).reset_index(drop=True)
+                st.dataframe(df)
 
-            ## saving file to local repo for temporary check
-            
-            uploaded_file.Database().save_mongodf(df,data_path,file_name+'.csv')
-            #uploaded_file.Database().upload_data(df,file_name)   #### This
-            st.write("Data has been successfully uploaded")
+
+                ## saving file to local repo for temporary check
+                uploaded_file.Database().save_mongodf(df, filename=file_name)
+                print("Hello WOrld")
+                #st.write("Data has been successfully uploaded")
+        except:
+            pass
 
 
     elif select_source == 'CSV from HTML':
@@ -102,8 +113,6 @@ def app():
                 lg.error(message)
 
 
-
-
     elif select_source == "JSON":
         st.subheader("Upload the JSON file")
         datafile = st.file_uploader("Upload JSON file", type=['json'])
@@ -118,8 +127,7 @@ def app():
             st.error(message+ "\n {}".format(e))
             lg.error(message)
 
-        
-    
+
     elif select_source == "EXCEL":
         st.subheader("Upload the EXCEL file")
         datafile = st.file_uploader("Upload EXCEL", type=['xls','xlsx'])
@@ -177,7 +185,6 @@ def app():
                 st.info(message)
 
 
-
     elif select_source == "TSV":
 
         st.subheader("Upload the TSV file")
@@ -200,15 +207,20 @@ def app():
 
     submit_form = st.button('Add Project')
     if submit_form:
-        #email, Project_Name,description ,select_source 
-        
+        print("gggggggggggggggggggggggg")
         cassandra = cassandra_user()
         user = cassandra.get_useraccount(f"SELECT * FROM user WHERE email = '{email}' ALLOW FILTERING ")
         
         
         if user.shape[0] >  0 :
             file = email + '_' + Project_Name + '_onlineeda_' + file_name
-            uploaded_file.Database().upload_data(df,file)
+            try:
+                df = uploaded_file.read_datafolder()
+            except:
+                pass
+            finally:
+                print("pppppppppppppppppppppppppppppppppp")
+                uploaded_file.Database().upload_data(df,file)
             status = uploaded_file.Database().check_existing_collection(file)
             if status:
                 project_name = email +'_'+ Project_Name
@@ -218,8 +230,11 @@ def app():
                 except Exception as e:
                     st.write("Issue ")
                     print(e)
+            else:
+                print("uuuuuuuuuuuuuuuuuuuuuuu")
         else:
             st.write("Entered emailid is not registered")
 
 
             #mongodb+srv://test:test@cluster0.ulenu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+            #automate_eda.stage01_cleaned_data

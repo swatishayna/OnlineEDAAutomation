@@ -10,8 +10,6 @@ def app():
     st.header("Advanced Exploratory Data Analysis")
     dataframe = uploaded_file.read_datafolder()
     try:
-        st.write(dataframe)
-    except:
         advanced = Advancedanalysis(dataframe)
 
         categorical = st.checkbox("View  Analysis of Categorical Columns")
@@ -34,8 +32,8 @@ def app():
                         st.write(f"values at the given quantile in {column} is {dataframe[column].quantile(quantile_value)}")
                     except:
                         pass
-
-
+    except:
+        st.write(dataframe)
 
 
 

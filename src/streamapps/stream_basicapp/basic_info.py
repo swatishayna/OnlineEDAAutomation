@@ -9,8 +9,6 @@ def app():
     dataframe = uploaded_file.read_datafolder()
 
     try:
-        st.write(dataframe)
-    except:
         view_df = st.checkbox("View Dataframe")
         if view_df:
             st.dataframe(dataframe)
@@ -34,4 +32,5 @@ def app():
         duplicate_rows = st.checkbox("Get Duplicate rows of the datatframe")
         if duplicate_rows:
             st.write(basic.get_duplicate_rows(dataframe))
-
+    except:
+        st.write(dataframe)

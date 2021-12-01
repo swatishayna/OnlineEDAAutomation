@@ -7,8 +7,6 @@ def app():
     st.header("Advanced Exploratory Visual Data Analysis")
     data = uploaded_file.read_datafolder()
     try:
-        st.write(data)
-    except:
         data_columns = data.columns
         data_type = data.dtypes
 
@@ -25,3 +23,5 @@ def app():
                 st.plotly_chart(result)
             except:
                 st.write(result)
+    except:
+        st.write(data)

@@ -7,12 +7,8 @@ def app():
     st.header("Advanced Exploratory Visual Data Analysis")
     data = uploaded_file.read_datafolder()
     try:
-        st.write(data)
-    except:
         data_columns = data.columns
         data_type = data.dtypes
-
-
         visual = visual_def.Visualization()
         col1, col2 = st.columns(2)
         valid_columns = [i for i in data_columns if data_type[i] == 'float64' or data_type[i] == 'int64']
@@ -25,7 +21,7 @@ def app():
                 st.plotly_chart(result)
             except:
                 st.write(result)
-
-
+    except:
+        st.write(data)
 
     

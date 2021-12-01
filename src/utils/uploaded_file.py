@@ -30,8 +30,6 @@ def read_datafolder():
     except:
         return "There is no Project Running!!Start Project (Project Dashboard-->Add Project or Project Dashboard-->View Project)"
 
-
-
 def onlyprojname(column):
     for i in column:
         i = str(i).split("_")[1]
@@ -46,9 +44,11 @@ def save_dataset(filename):
     mongo_df[0].to_csv(os.path.join(data_directory_path,filename),index = False)
     print("file added")
 
-def save_uploaded_file(uploaded_file):
+def save_uploaded_file(uploaded_file):   #csv
+    path = get_data_directory_path()
     try:
-        with open(os.path.join("src//data",  uploaded_file.name),"wb") as f:
+        # with open(os.path.join("src//data",  uploaded_file.name),"wb") as f:
+        with open(os.path.join(path, uploaded_file.name), "wb") as f:
             f.write(uploaded_file.getbuffer())
             return st.success("Saved file {} in data folder. ".format(uploaded_file.name))
     except Exception as e :
@@ -89,8 +89,8 @@ class Database:
         self.table = table
         self.db = db
 
-        #client = pymongo.MongoClient(client_secret, ssl_cert_reqs=ssl.CERT_NONE)
-        client = pymongo.MongoClient(client_secret)
+        client = pymongo.MongoClient(client_secret, ssl_cert_reqs=ssl.CERT_NONE)
+        #client = pymongo.MongoClient(client_secret)
         self.mng_db = client[self.db]
         self.collection_name = self.table
         print("66666666666666666666666666666666666666")
@@ -148,7 +148,7 @@ class Database:
 
         # create a DataFrame object from Series dictionary
         mongo_df = pd.DataFrame(df_series)
-
+        print(mongo_df)
         # assinging the column names
         mongo_df.columns = column_list[1:]
         return mongo_df, mongo_df.dtypes
@@ -188,32 +188,45 @@ class Database:
 
             self.db_cm.insert(data_json)
         except:
-            pass
+            print("**********data Cant be inserted from above method ***********")
+            self.insert_dataframe_into_collection(table,df)
 
-    def save_mongodf(self, df, path, filename):
-        self.filename = filename
-        path = os.path.join(path, self.filename)
+
+    def save_mongodf(self, df, filename):
+        #path = get_data_directory_path()
+        path = os.path.join((Path(__file__).resolve().parent.parent),'data')
+        path = os.path.join(path,filename)
         df.to_csv(path)
-
+        print("rrrrrrrrrrrrrrrrrrrrrr")
+    def insert_dataframe_into_collection(self, table,data_frame):
+        try:
+            records = list(json.loads(data_frame.T.to_json()).values())
+            self.mng_db, self.collection_name = self.connect(table)
+            self.db_cm = self.mng_db[self.collection_name]
+            self.db_cm.insert_many(records)
+            return len(records)
+        except Exception as e:
+            print("Nooooooooooooooooooooooooo")
     def upload_data(self, df, table):
         try:
             self.insert_data(table, df)
-            return 1
+            print("***************************")
+
         except:
-            return 0
+            pass
 
     def check_existing_collection(self, table):
         self.mng_db, self.collection_name = self.connect(table)
         status = hasattr(self.mng_db, table)
-        #collection_list = self.mng_db.list_collection_names()
         return status
+
 
 
 class Database_mongoexit:
     def connect(self,client_secret="mongodb+srv://eda:eda@cluster0.vqh6p.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",db="dataset"):
         self.db = db
 
-        client = pymongo.MongoClient(client_secret)
+        client = pymongo.MongoClient(client_secret,ssl_cert_reqs=ssl.CERT_NONE)
         self.mng_db = client[self.db]
         return self.mng_db,client
 

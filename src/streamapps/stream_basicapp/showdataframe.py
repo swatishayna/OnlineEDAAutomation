@@ -6,7 +6,7 @@ def app():
     data = uploaded_file.read_datafolder()
 
     try:
-        st.write(data)
-    except:
        st.dataframe(data)
+    except:
+        st.write(data)
     

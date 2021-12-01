@@ -7,16 +7,10 @@ def app():
     st.header("Advanced Exploratory Visual Data Analysis")
     data = uploaded_file.read_datafolder()
     try:
-        st.write(data)
-    except:
         data_columns = data.columns
         data_type = data.dtypes
 
-
         visual = visual_def.Visualization()
-
-
-
         col1, col2,col3 = st.columns(3)
         feature_x = col1.selectbox('X', data_columns)
         feature_y = col2.selectbox('Y',data_columns)
@@ -29,3 +23,5 @@ def app():
                 st.plotly_chart(result)
             except:
                 st.write(result)
+    except:
+        st.write(data)

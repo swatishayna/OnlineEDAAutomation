@@ -8,8 +8,6 @@ def app():
     st.header("Advanced Exploratory Data Analysis")
     dataframe = uploaded_file.read_datafolder()
     try:
-        st.write(dataframe)
-    except:
         advanced = Advancedanalysis(dataframe)
 
         aggregate_fun_list = ["sum", "count", "describe", "mean", "median"]
@@ -64,4 +62,5 @@ def app():
                     st.dataframe(result)
                 except Exception as e:
                     st.write("Try Again")
-
+    except:
+        st.write(dataframe)
