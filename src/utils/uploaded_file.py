@@ -10,6 +10,20 @@ from pathlib import Path
 import shutil
 
 
+def get_log_directory_path():
+    return os.path.join((Path(__file__).resolve().parent.parent.parent), 'logs')
+
+def delete_and_create_log_directory():
+    log_directory_path = get_log_directory_path()
+    if os.path.isdir(log_directory_path):
+        shutil.rmtree(log_directory_path)
+    os.mkdir(log_directory_path)
+    os.open(os.path.join(log_directory_path,"eda_logs.txt"), "a+")
+
+def get_log_file():
+    log_directory_path = get_log_directory_path()
+    log_directory_file_path = os.path.join(log_directory_path,"eda_logs.txt")
+    return log_directory_file_path
 
 def get_data_directory_path():
     return os.path.join((Path(__file__).resolve().parent.parent),'data')
@@ -47,17 +61,16 @@ def save_dataset(filename):
     mongo_df[0].to_csv(os.path.join(data_directory_path,filename),index = False)
     print("file added")
 
-def save_uploaded_file(uploaded_file):   #csv
+def save_uploaded_file(file):   #csv
     path = get_data_directory_path()
     try:
-        # with open(os.path.join("src//data",  uploaded_file.name),"wb") as f:
-        with open(os.path.join(path, uploaded_file.name), "wb") as f:
-            f.write(uploaded_file.getbuffer())
-            return st.success("Saved file {} in data folder. ".format(uploaded_file.name))
+
+        with open(os.path.join(path, file.name), "wb") as f:
+            f.write(file.getbuffer())
+            return st.success("Saved file {} in data folder. ".format(file.name))
     except Exception as e :
         message = "Something went wrong while saving the file in to the data folder"
         st.error(message+"\n{}".format(e))
-        # logger.log(message,error)
 
 def save_csv(data_frame,upload_file):
     try:
@@ -78,6 +91,8 @@ def save_cassandra_bundle(user,uploaded_file):
     with open(os.path.join("{}\\config".format(user),uploaded_file.name),'wb') as f:
         f.write(uploaded_file.getbuffer())
     return st.success("Saved file {} in {}'s config folder".format(uploaded_file.name,user))
+
+
 
 
 ################################MongoDB################################################
@@ -194,13 +209,13 @@ class Database:
             print("**********data Cant be inserted from above method ***********")
             self.insert_dataframe_into_collection(table,df)
 
-
     def save_mongodf(self, df, filename):
         #path = get_data_directory_path()
         path = os.path.join((Path(__file__).resolve().parent.parent),'data')
         path = os.path.join(path,filename)
         df.to_csv(path)
         print("rrrrrrrrrrrrrrrrrrrrrr")
+
     def insert_dataframe_into_collection(self, table,data_frame):
         try:
             records = list(json.loads(data_frame.T.to_json()).values())
@@ -210,6 +225,7 @@ class Database:
             return len(records)
         except Exception as e:
             print("Nooooooooooooooooooooooooo")
+
     def upload_data(self, df, table):
         try:
             self.insert_data(table, df)
@@ -238,6 +254,7 @@ class Database_mongoexit:
         print("yes")
         collection_list = self.mng_db.list_collection_names()
         return collection_list
+
     def close_connection(self):
         try:
             obj = self.connect()[1]

@@ -7,6 +7,8 @@ from cassandra import ConsistencyLevel
 import pandas as pd
 import time
 import datetime
+from cassandra.query import BatchStatement
+import numpy as np
 
 
 class cassandra_user:
@@ -61,3 +63,24 @@ class cassandra_user:
             return "Suggestion Recorded"
         except Exception as e:
             return "Suggestion Couldnt be REcorded!! Try Again!!"
+
+
+
+    def write_to_cassandra(self,df):
+
+        session = self.connect()
+        CASSANDRA_PARTITION_NUM = 200
+        session.execute("USE user_log")
+        prepared_query = session.prepare('INSERT INTO logs(logger_id , log_date , email , log_msg ) VALUES (?,?,?,?)')
+        for partition in self.split_to_partitions(df, CASSANDRA_PARTITION_NUM):
+            batch = BatchStatement(consistency_level=ConsistencyLevel.QUORUM)
+            for index, item in partition.iterrows():
+                batch.add(prepared_query, (str(item[0]), str(item[1]), str(item[2]), str(item[3])))
+            session.execute(batch)
+
+    def split_to_partitions(self,df, partition_number):
+        permuted_indices = np.random.permutation(len(df))
+        partitions = []
+        for i in range(partition_number):
+            partitions.append(df.iloc[permuted_indices[i::partition_number]])
+        return partitions

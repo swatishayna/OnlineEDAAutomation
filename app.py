@@ -5,12 +5,14 @@ from src.streamapps.multipage import MultiPage
 from src.streamapps import edabasic,edaadvanced,edavisual,edaupload,suggestion
 import os
 import shutil
-from src.utils.uploaded_file import get_data_directory_path
+from src.utils.uploaded_file import get_data_directory_path, get_log_file, delete_and_create_log_directory
 import atexit
 from src.utils.uploaded_file import Database_mongoexit
 from src.utils.connection_cassandra import cassandra_user
 from src.utils.uploaded_file import onlyprojname
 import numpy as np
+import pandas as pd
+
 
 #clean data directory
 @atexit.register
@@ -30,6 +32,12 @@ def on_exit():
     print(remove_projects)
     cassandra.delete_record(f"DELETE FROM project WHERE project_name IN {tuple(remove_projects)}")
     mongo_Stop = Database_mongoexit().close_connection()
+
+    # Writing log to cloud database
+    file_path = get_log_file()
+    df = pd.read_csv(file_path, sep="\t\t", header=None)
+    cassandra.write_to_cassandra(df)
+    delete_and_create_log_directory()
     print("Program Stopped")
 
 
