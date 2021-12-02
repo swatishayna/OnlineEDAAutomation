@@ -1,7 +1,7 @@
-                                                                                EDAAutomation
-                                              ========================================================================================
+                                                                       EDAAutomation
+                                  ========================================================================================
 
-                                                                            Automated EDA Project
+                                                                     Automated EDA Project
 
 
 Link to the deployed app: https://flasklogineda.herokuapp.com/
