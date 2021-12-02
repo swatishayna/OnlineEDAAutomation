@@ -1,7 +1,25 @@
-EDAAutomation
-========================================================================================
+                                                                                EDAAutomation
+                                              ========================================================================================
 
-Automated EDA Project
+                                                                            Automated EDA Project
+
+
+Link to the deployed app: https://flasklogineda.herokuapp.com/
+Application video Demo: https://youtu.be/Cnqi35boTe8
+LinkedIn Post : https://www.linkedin.com/in/swati-968834130/recent-activity/
+
+
+ 
+The initial and the most crucial part of any model building is making the data set ready for next step.   Howsoever it consumes 70-80% of the time which can be reduced. An initial knowledge of the data is very much required to go for advanced data mining. This work discusses the implementation of unmanned basic exploration of the data in order to reduce the time of the scientist so they can work on other important part of the work. And this work also explains the behind implementation of data mining and can be very much useful for new data analytics.
+
+The solution proposed here is an Automated EDA which can be implemented to perform above mentioned use cases. Initially the Automated EDA will take the dataset from the client , will process the dataset into Dataframe and on this processed DataFrame further operations will be performed. The choice of operations are fairly dependent on the user and the copy of the performed operations will be made available to the client on the provided email.
+To create an automated exploration of data at the initial stage will make following processes faster:
+To reduce coding so the exploration of the data can be made possible for management
+To reduce time involved in basic exploration of data set and data mining
+To demonstrate the working of exploring data to the data science enthusiast
+To make the code readily available to the data scientists
+
+This project can perform basic to advanced to visual analysis on the data set without writing any code.
 
 Project Organization
 ------------
